@@ -1,0 +1,7 @@
+task,fields,dead_fields,strict_pass_rate,partial_credit,partial_credit_live_fields_only
+DE01_pseudobulk_de,1,0,0.625,0.625,0.625
+NRM01_sparse_normalization,3,2,0.604,0.868,0.604
+T04a_endothelin_niche_sources,2,1,0.545,0.773,0.576
+bd_rhapsody_tnbc_panel_aware_qc,3,0,0.75,0.854,0.854
+dr_05_pca_preprocessing_sentinels,2,0,0.104,0.479,0.479
+tapestri_ccus_clustering_12_largest_mutant_clone,2,1,0.312,0.656,0.312

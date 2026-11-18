@@ -1,0 +1,4 @@
+task,runs,intended_runs,intended_pass,partial_runs,partial_pass,trap_runs,trap_pass,other_runs,passes,passes_from_trap_methods,window_sensitivity,window_specificity,intended_span_in_tolerance_widths,trap_runs_inside_intended_span,nearest_trap_gap_in_tolerance_widths
+DE01_pseudobulk_de,48,17,17,9,0,20,13,2,30,13,1.0,0.35,0.19,0,0.07
+NRM01_sparse_normalization,48,29,29,0,0,17,0,2,29,0,1.0,1.0,0.0,0,0.6
+dr_05_pca_preprocessing_sentinels,48,5,5,0,0,43,0,0,5,0,1.0,1.0,0.18,0,2.42

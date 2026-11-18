@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sc-zprime"
+version = "0.2.0"
+description = "Z-prime for single-cell agent evals: assay validation for the benchmarks that grade AI agents on biology."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["pandas>=2.2", "numpy>=1.26", "matplotlib>=3.8", "scipy>=1.11"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+sc-zprime = "sc_zprime.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+sc_zprime = ["annotations/*.csv", "annotations/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

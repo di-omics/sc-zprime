@@ -1,0 +1,7 @@
+task,trap_method,runs,configurations,providers,runs_passed,configurations_with_a_pass,lowest_margin,median_margin,highest_margin,distinct_answers,zprime_against_intended,zprime_note
+DE01_pseudobulk_de,per-cell rank test,19,8,4,13,7,-3.28,-0.93,0.77,10,-1.04,
+DE01_pseudobulk_de,per-cell t-test,1,1,1,0,0,7.11,7.11,7.11,1,,needs at least 3 runs in each control
+NRM01_sparse_normalization,"log-normalise, then dispersion HVG",13,8,4,0,0,-1.42,-1.42,-1.42,1,1.0,
+NRM01_sparse_normalization,dispersion HVG on raw counts,4,4,3,0,0,18.11,18.11,18.12,2,1.0,
+dr_05_pca_preprocessing_sentinels,PCA with neither step,8,5,3,0,0,2.0,2.42,4.52,4,0.21,
+dr_05_pca_preprocessing_sentinels,"genes scaled, depth not regressed",35,15,4,0,0,1.75,2.29,6.16,11,0.29,

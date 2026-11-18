@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install -r requirements.lock
+          python -m pip install -e . --no-deps
+      - name: Unit tests (no benchmark data)
+        run: python -m pytest -q
+      - name: ASCII only, no em dashes
+        run: |
+          ! git ls-files -z | xargs -0 file --mime | grep -v 'charset=binary' | cut -d: -f1 | xargs grep -nP '[^\x00-\x7F]'
+
+  reproduce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned dependencies
+        run: |
+          python -m pip install -r requirements.lock
+          python -m pip install -e . --no-deps
+      - name: Fetch the upstream benchmark at the pinned commit
+        run: scripts/fetch_upstream.sh "$RUNNER_TEMP/upstream"
+      - name: Full test suite against the benchmark data
+        env:
+          SC_ZPRIME_UPSTREAM: ${{ runner.temp }}/upstream
+        run: python -m pytest -q -rs
+      - name: Regenerate every table and compare with what is committed
+        run: |
+          sc-zprime run --upstream "$RUNNER_TEMP/upstream/scbench" --out "$RUNNER_TEMP/out" --name scbench
+          python scripts/compare_results.py results/scbench "$RUNNER_TEMP/out" --tolerance 0.005

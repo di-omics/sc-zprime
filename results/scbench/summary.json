@@ -1,0 +1,240 @@
+{
+  "tool_version": "0.2.0",
+  "benchmark": "scbench",
+  "upstream_commit": "106726f432e0221a3fdbf9ef8e39b21f638f9b60",
+  "inputs": {
+    "files": 826,
+    "sha256": "92548b92ad7c02a44106d2934c531992ab45190b1fa49233d14bc90014ac0c4d"
+  },
+  "environment": {
+    "python": "3.12.13",
+    "pandas": "3.1.1",
+    "numpy": "2.5.5",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "uncertainty": {
+    "method": "cluster bootstrap over configurations, 95% percentile interval",
+    "resamples": 10000,
+    "seed": 20261117,
+    "caveat": "approximate and probably too narrow with this few configurations; no interval when every configuration agrees or fewer than 3 stand behind a number"
+  },
+  "reproduce": {
+    "runs": 273,
+    "runs_agree": 273,
+    "fields": 594,
+    "fields_agree": 594,
+    "tasks": 6,
+    "configurations": 16,
+    "grader_versions": [
+      "0.3.8",
+      "0.3.9"
+    ]
+  },
+  "skipped": [],
+  "runs_with_a_configuration_error": 0,
+  "pass_rate": 0.487,
+  "readouts": {
+    "fields": 13,
+    "numeric_fields": 11,
+    "dead_fields": 4,
+    "tasks_with_a_dead_field": 3
+  },
+  "edge": {
+    "edge_decided_runs": 68,
+    "runs": 273,
+    "share": 0.249
+  },
+  "clusters": {
+    "numeric_answers": 513,
+    "answers_in_clusters_of_3_or_more": 327,
+    "share": 0.637,
+    "live_field_answers": 384,
+    "live_field_answers_in_clusters": 203,
+    "live_field_share": 0.529,
+    "clusters_near_an_edge": 5,
+    "runs_in_clusters_near_an_edge": 61
+  },
+  "repeatability": {
+    "cells": 91,
+    "split": 33,
+    "split_share": 0.363,
+    "identical_answer_share": 0.242
+  },
+  "method_tracing": {
+    "tasks_traced": 3,
+    "runs_traced": 144,
+    "labels_set_by_reading": 4,
+    "unresolved": 0,
+    "passes": 64,
+    "passes_from_trap_methods": 13,
+    "ran_intended_but_submitted_other": 15,
+    "traced_from_printed_value": 133,
+    "traced_by_fallback": 7,
+    "by_task": [
+      {
+        "task": "DE01_pseudobulk_de",
+        "runs": 48,
+        "intended_runs": 17,
+        "intended_pass": 17,
+        "partial_runs": 9,
+        "partial_pass": 0,
+        "trap_runs": 20,
+        "trap_pass": 13,
+        "other_runs": 2,
+        "passes": 30,
+        "passes_from_trap_methods": 13,
+        "window_sensitivity": 1.0,
+        "window_specificity": 0.35,
+        "intended_span_in_tolerance_widths": 0.19,
+        "trap_runs_inside_intended_span": 0,
+        "nearest_trap_gap_in_tolerance_widths": 0.07
+      },
+      {
+        "task": "NRM01_sparse_normalization",
+        "runs": 48,
+        "intended_runs": 29,
+        "intended_pass": 29,
+        "partial_runs": 0,
+        "partial_pass": 0,
+        "trap_runs": 17,
+        "trap_pass": 0,
+        "other_runs": 2,
+        "passes": 29,
+        "passes_from_trap_methods": 0,
+        "window_sensitivity": 1.0,
+        "window_specificity": 1.0,
+        "intended_span_in_tolerance_widths": 0.0,
+        "trap_runs_inside_intended_span": 0,
+        "nearest_trap_gap_in_tolerance_widths": 0.6
+      },
+      {
+        "task": "dr_05_pca_preprocessing_sentinels",
+        "runs": 48,
+        "intended_runs": 5,
+        "intended_pass": 5,
+        "partial_runs": 0,
+        "partial_pass": 0,
+        "trap_runs": 43,
+        "trap_pass": 0,
+        "other_runs": 0,
+        "passes": 5,
+        "passes_from_trap_methods": 0,
+        "window_sensitivity": 1.0,
+        "window_specificity": 1.0,
+        "intended_span_in_tolerance_widths": 0.18,
+        "trap_runs_inside_intended_span": 0,
+        "nearest_trap_gap_in_tolerance_widths": 2.42
+      }
+    ],
+    "by_trap_method": [
+      {
+        "task": "DE01_pseudobulk_de",
+        "trap_method": "per-cell rank test",
+        "runs": 19,
+        "configurations": 8,
+        "providers": 4,
+        "runs_passed": 13,
+        "configurations_with_a_pass": 7,
+        "lowest_margin": -3.28,
+        "median_margin": -0.93,
+        "highest_margin": 0.77,
+        "distinct_answers": 10,
+        "zprime_against_intended": -1.04,
+        "zprime_note": ""
+      },
+      {
+        "task": "DE01_pseudobulk_de",
+        "trap_method": "per-cell t-test",
+        "runs": 1,
+        "configurations": 1,
+        "providers": 1,
+        "runs_passed": 0,
+        "configurations_with_a_pass": 0,
+        "lowest_margin": 7.11,
+        "median_margin": 7.11,
+        "highest_margin": 7.11,
+        "distinct_answers": 1,
+        "zprime_against_intended": null,
+        "zprime_note": "needs at least 3 runs in each control"
+      },
+      {
+        "task": "NRM01_sparse_normalization",
+        "trap_method": "log-normalise, then dispersion HVG",
+        "runs": 13,
+        "configurations": 8,
+        "providers": 4,
+        "runs_passed": 0,
+        "configurations_with_a_pass": 0,
+        "lowest_margin": -1.42,
+        "median_margin": -1.42,
+        "highest_margin": -1.42,
+        "distinct_answers": 1,
+        "zprime_against_intended": 1.0,
+        "zprime_note": ""
+      },
+      {
+        "task": "NRM01_sparse_normalization",
+        "trap_method": "dispersion HVG on raw counts",
+        "runs": 4,
+        "configurations": 4,
+        "providers": 3,
+        "runs_passed": 0,
+        "configurations_with_a_pass": 0,
+        "lowest_margin": 18.11,
+        "median_margin": 18.11,
+        "highest_margin": 18.12,
+        "distinct_answers": 2,
+        "zprime_against_intended": 1.0,
+        "zprime_note": ""
+      },
+      {
+        "task": "dr_05_pca_preprocessing_sentinels",
+        "trap_method": "PCA with neither step",
+        "runs": 8,
+        "configurations": 5,
+        "providers": 3,
+        "runs_passed": 0,
+        "configurations_with_a_pass": 0,
+        "lowest_margin": 2.0,
+        "median_margin": 2.42,
+        "highest_margin": 4.52,
+        "distinct_answers": 4,
+        "zprime_against_intended": 0.21,
+        "zprime_note": ""
+      },
+      {
+        "task": "dr_05_pca_preprocessing_sentinels",
+        "trap_method": "genes scaled, depth not regressed",
+        "runs": 35,
+        "configurations": 15,
+        "providers": 4,
+        "runs_passed": 0,
+        "configurations_with_a_pass": 0,
+        "lowest_margin": 1.75,
+        "median_margin": 2.29,
+        "highest_margin": 6.16,
+        "distinct_answers": 11,
+        "zprime_against_intended": 0.29,
+        "zprime_note": ""
+      }
+    ]
+  },
+  "leaderboard": {
+    "configurations": 19,
+    "with_interval": 18,
+    "tasks": 195,
+    "median_half_width_points": 6.34,
+    "comparison": "unpaired test of each difference at the 5% level, no adjustment for the number of pairs",
+    "others": 17,
+    "others_not_told_apart_from_the_leader": 10,
+    "others_overlapping_the_leader": 11,
+    "pairs": 153,
+    "pairs_not_told_apart": 76,
+    "pairs_overlapping": 93,
+    "implied_split_share_median": 0.21,
+    "implied_split_share_min": 0.154,
+    "implied_split_share_max": 0.339,
+    "implied_single_rerun_disagreement_median": 0.14
+  }
+}

@@ -1,0 +1,8 @@
+task,runs,edge_decided,share
+DE01_pseudobulk_de,48,18,0.375
+NRM01_sparse_normalization,48,29,0.604
+T04a_endothelin_niche_sources,33,0,0.0
+bd_rhapsody_tnbc_panel_aware_qc,48,17,0.354
+dr_05_pca_preprocessing_sentinels,48,0,0.0
+tapestri_ccus_clustering_12_largest_mutant_clone,48,4,0.083
+ALL,273,68,0.249

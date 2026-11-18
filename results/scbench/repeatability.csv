@@ -1,0 +1,8 @@
+task,cells,incomplete_cells,all_pass,all_fail,split,split_share,identical_answer_share
+DE01_pseudobulk_de,16.0,0.0,6.0,3.0,7.0,0.438,0.375
+NRM01_sparse_normalization,16.0,0.0,7.0,3.0,6.0,0.375,0.375
+T04a_endothelin_niche_sources,11.0,0.0,3.0,3.0,5.0,0.455,0.545
+bd_rhapsody_tnbc_panel_aware_qc,16.0,0.0,9.0,2.0,5.0,0.312,0.0
+dr_05_pca_preprocessing_sentinels,16.0,0.0,1.0,14.0,1.0,0.062,0.25
+tapestri_ccus_clustering_12_largest_mutant_clone,16.0,0.0,2.0,5.0,9.0,0.562,0.0
+ALL,91.0,0.0,28.0,30.0,33.0,0.363,0.242

@@ -1,0 +1,7 @@
+task,category,platform,horizon,grader_type,n_fields,has_canary,supported
+T04a_endothelin_niche_sources,cell_typing,illumina-snrna,long,numeric_tolerance,2,True,True
+tapestri_ccus_clustering_12_largest_mutant_clone,clustering,missionbio-tapestri,long,numeric_tolerance,2,True,True
+DE01_pseudobulk_de,differential_expression,parsebio,long,numeric_tolerance,1,True,True
+dr_05_pca_preprocessing_sentinels,dimensionality_reduction,chromium,small,numeric_tolerance,2,True,True
+NRM01_sparse_normalization,normalization,csgenetics,small,numeric_tolerance,3,True,True
+bd_rhapsody_tnbc_panel_aware_qc,qc,bd_rhapsody,small,numeric_tolerance,3,True,True

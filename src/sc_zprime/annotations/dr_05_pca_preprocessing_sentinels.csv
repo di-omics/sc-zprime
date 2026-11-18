@@ -1,0 +1,4 @@
+run_id,label,note
+dr_05_pca_preprocessing_sentinels/gemini/gemini-3.1-pro-preview/mini-swe-agent/r1,"genes scaled, depth not regressed","earlier steps define a function with an optional regression branch; the script that writes the answer (step 14) scales and runs PCA with no regression"
+dr_05_pca_preprocessing_sentinels/openai/gpt-5.5/mini-swe-agent/r2,depth regressed and genes scaled before PCA,"the submitted value first appears by coincidence inside an unrelated gene table at step 2; the pipeline that yields it (steps 7 and 15) regresses log total counts, scales, then runs PCA"
+dr_05_pca_preprocessing_sentinels/gemini/gemini-3.1-pro-preview/mini-swe-agent/r2,"genes scaled, depth not regressed","step 8 is a configuration sweep whose output attributes the submitted value to the configuration with scaling on and regression off; the script that writes the answer (step 11) scales and runs PCA with no regression"

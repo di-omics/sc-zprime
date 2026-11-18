@@ -1,0 +1,41 @@
+analysis,setting,scope,value,baseline
+edge-decided share of verdicts,tolerance x0.95 or x1.05,ALL,0.081,False
+edge-decided share of verdicts,tolerance x0.9 or x1.1,ALL,0.114,False
+edge-decided share of verdicts,tolerance x0.8 or x1.25,ALL,0.249,True
+edge-decided share of verdicts,tolerance x0.67 or x1.5,ALL,0.326,False
+edge-decided share of verdicts,tolerance x0.5 or x2.0,ALL,0.462,False
+dead readouts (count of fields),passed by at least 90% of runs,ALL,5.0,False
+dead readouts (count of fields),passed by at least 95% of runs,ALL,4.0,True
+dead readouts (count of fields),passed by at least 100% of runs,ALL,3.0,False
+share of numeric answers in a cluster of identical values,cluster of at least 2,ALL,0.743,False
+share of numeric answers in a cluster of identical values,cluster of at least 3,ALL,0.637,True
+share of numeric answers in a cluster of identical values,cluster of at least 5,ALL,0.583,False
+Z-prime,per trap method (the reported form): per-cell rank test,DE01_pseudobulk_de,-1.039,True
+Z-prime,per trap method (the reported form): per-cell t-test,DE01_pseudobulk_de,,True
+Z-prime,"all trap methods pooled, mean and SD",DE01_pseudobulk_de,-4.504,False
+Z-prime,"all trap methods pooled, median and MAD",DE01_pseudobulk_de,,False
+Z-prime,"pooled, mean and SD, partial tier counted as a negative control",DE01_pseudobulk_de,-8.07,False
+share of trap-method runs that pass,as labelled,DE01_pseudobulk_de,0.65,True
+share of trap-method runs that pass,partial tier counted as a trap,DE01_pseudobulk_de,0.448,False
+share of trap-method runs that pass,without anthropic,DE01_pseudobulk_de,0.714,False
+share of trap-method runs that pass,without gemini,DE01_pseudobulk_de,0.588,False
+share of trap-method runs that pass,without openai,DE01_pseudobulk_de,0.667,False
+share of trap-method runs that pass,without xai,DE01_pseudobulk_de,0.636,False
+Z-prime,"per trap method (the reported form): log-normalise, then dispersion HVG",NRM01_sparse_normalization,1.0,True
+Z-prime,per trap method (the reported form): dispersion HVG on raw counts,NRM01_sparse_normalization,0.999,True
+Z-prime,"all trap methods pooled, mean and SD",NRM01_sparse_normalization,-5.412,False
+Z-prime,"all trap methods pooled, median and MAD",NRM01_sparse_normalization,,False
+share of trap-method runs that pass,as labelled,NRM01_sparse_normalization,0.0,True
+share of trap-method runs that pass,without anthropic,NRM01_sparse_normalization,0.0,False
+share of trap-method runs that pass,without gemini,NRM01_sparse_normalization,0.0,False
+share of trap-method runs that pass,without openai,NRM01_sparse_normalization,0.0,False
+share of trap-method runs that pass,without xai,NRM01_sparse_normalization,0.0,False
+Z-prime,per trap method (the reported form): PCA with neither step,dr_05_pca_preprocessing_sentinels,0.215,True
+Z-prime,"per trap method (the reported form): genes scaled, depth not regressed",dr_05_pca_preprocessing_sentinels,0.288,True
+Z-prime,"all trap methods pooled, mean and SD",dr_05_pca_preprocessing_sentinels,0.282,False
+Z-prime,"all trap methods pooled, median and MAD",dr_05_pca_preprocessing_sentinels,0.777,False
+share of trap-method runs that pass,as labelled,dr_05_pca_preprocessing_sentinels,0.0,True
+share of trap-method runs that pass,without anthropic,dr_05_pca_preprocessing_sentinels,0.0,False
+share of trap-method runs that pass,without gemini,dr_05_pca_preprocessing_sentinels,0.0,False
+share of trap-method runs that pass,without openai,dr_05_pca_preprocessing_sentinels,0.0,False
+share of trap-method runs that pass,without xai,dr_05_pca_preprocessing_sentinels,0.0,False

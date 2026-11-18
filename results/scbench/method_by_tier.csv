@@ -1,0 +1,13 @@
+task,tier,method,runs,passes,configurations,median_margin,pass_rate
+DE01_pseudobulk_de,intended,"pseudobulk DESeq2, donor in design",17,17,7,0.51,1.0
+DE01_pseudobulk_de,partial,"pseudobulk DESeq2, no donor term",9,0,4,1.03,0.0
+DE01_pseudobulk_de,trap,per-cell rank test,19,13,8,-0.93,0.684
+DE01_pseudobulk_de,trap,per-cell t-test,1,0,1,7.11,0.0
+DE01_pseudobulk_de,other,"pseudobulk paired t-test, hand-rolled",2,0,1,8.22,0.0
+NRM01_sparse_normalization,intended,variance-stabilised HVG on counts (seurat_v3),29,29,13,-0.82,1.0
+NRM01_sparse_normalization,trap,"log-normalise, then dispersion HVG",13,0,8,-1.42,0.0
+NRM01_sparse_normalization,trap,dispersion HVG on raw counts,4,0,4,18.11,0.0
+NRM01_sparse_normalization,other,seurat_v3 given log-normalised data,2,0,1,-2.05,0.0
+dr_05_pca_preprocessing_sentinels,intended,depth regressed and genes scaled before PCA,5,5,2,-0.94,1.0
+dr_05_pca_preprocessing_sentinels,trap,"genes scaled, depth not regressed",35,0,15,2.29,0.0
+dr_05_pca_preprocessing_sentinels,trap,PCA with neither step,8,0,5,2.42,0.0

@@ -1,0 +1,14 @@
+task,field,kind,window_lower_pct_of_reference,window_upper_pct_of_reference,lower_edge_at_zero,runs,pass_rate,distinct_answers,largest_cluster_share,dead,task_failures,failures_involving_field,failures_from_field_alone
+DE01_pseudobulk_de,n_degs,absolute,30.0,30.0,False,48,0.625,16,0.333,False,18,18,18
+NRM01_sparse_normalization,median_hvg_prevalence,absolute,39.0,39.0,False,48,0.604,5,0.604,False,19,19,19
+NRM01_sparse_normalization,median_umis_per_cell,absolute,18.0,18.0,False,48,1.0,1,1.0,True,19,0,0
+NRM01_sparse_normalization,pct_counts_one,absolute,7.0,7.0,False,48,1.0,5,0.688,True,19,0,0
+T04a_endothelin_niche_sources,interpretation,exact,0.0,0.0,False,33,0.576,4,0.576,False,15,14,14
+T04a_endothelin_niche_sources,mural_nuclei,absolute,,,False,33,0.97,2,0.97,True,15,1,1
+bd_rhapsody_tnbc_panel_aware_qc,median_genes_per_pbmc,absolute,12.0,12.0,False,48,0.792,9,0.333,False,12,10,3
+bd_rhapsody_tnbc_panel_aware_qc,n_monocytes_pbmc,absolute,39.0,39.0,False,48,0.938,41,0.062,False,12,3,0
+bd_rhapsody_tnbc_panel_aware_qc,n_pbmcs_retained,absolute,6.0,6.0,False,48,0.833,29,0.146,False,12,8,2
+dr_05_pca_preprocessing_sentinels,max_top5_depth_corr,absolute,100.0,74.0,True,48,0.104,18,0.312,False,43,43,36
+dr_05_pca_preprocessing_sentinels,pc1_top_abs_load,absolute,54.0,46.0,False,48,0.854,17,0.312,False,43,7,0
+tapestri_ccus_clustering_12_largest_mutant_clone,interpretation,exact,0.0,0.0,False,48,1.0,1,1.0,True,33,0,0
+tapestri_ccus_clustering_12_largest_mutant_clone,largest_clone_pct,absolute,26.0,26.0,False,48,0.312,44,0.042,False,33,33,33
