@@ -1,0 +1,96 @@
+{
+  "tool_version": "0.2.0",
+  "benchmark": "txbench-pp",
+  "upstream_commit": "920bff72157cb2a6106ff4f534f160eccca8ad85",
+  "kind": "first grading from transcripts; no published verdicts to compare with",
+  "tasks": 12,
+  "tasks_with_a_public_grader": 12,
+  "tasks_gradable": 12,
+  "transcripts": 48,
+  "configurations": 4,
+  "max_repeats_per_configuration": 1,
+  "runs_with_a_published_verdict": 0,
+  "runs_gradable": 48,
+  "answers_recovered": 44,
+  "answer_sources": {
+    "none": 4,
+    "printed": 28,
+    "tagged": 1,
+    "written": 15
+  },
+  "runs_passed": 19,
+  "recovered_answers_that_are_the_only_one_shown": 44,
+  "recovered_answers_where_the_verdict_depends_on_which": 0,
+  "recovered_answers_where_the_file_was_written_again_unseen": 0,
+  "recovered_answers_by_harness": {
+    "claude-code": 12,
+    "openai-codex": 11,
+    "pi": 21
+  },
+  "transcripts_by_harness": {
+    "claude-code": 12,
+    "openai-codex": 12,
+    "pi": 24
+  },
+  "tasks_no_run_passed": 2,
+  "tasks_every_run_passed": 0,
+  "fields_graded": 113,
+  "fields_failed": 42,
+  "failed_fields_by_reason": {
+    "value": 42
+  },
+  "failed_fields_by_kind": {
+    "label_set": 10,
+    "marker_list": 14,
+    "numeric": 18
+  },
+  "failed_fields_a_change_of_form_would_pass": 0,
+  "runs_failed_on_form_alone": 0,
+  "by_failure_mode": [
+    {
+      "failure_mode": "metric_statistic_mismatch",
+      "tasks": 5,
+      "answers_recovered": 19,
+      "passed": 7
+    },
+    {
+      "failure_mode": "biological_interpretation",
+      "tasks": 4,
+      "answers_recovered": 15,
+      "passed": 6
+    },
+    {
+      "failure_mode": "causal_epistemic_overreach",
+      "tasks": 3,
+      "answers_recovered": 11,
+      "passed": 5
+    },
+    {
+      "failure_mode": "marker_reference_label_scope",
+      "tasks": 3,
+      "answers_recovered": 12,
+      "passed": 6
+    },
+    {
+      "failure_mode": "subset_scope_compartment",
+      "tasks": 3,
+      "answers_recovered": 12,
+      "passed": 5
+    },
+    {
+      "failure_mode": "qc_control_artifact",
+      "tasks": 2,
+      "answers_recovered": 6,
+      "passed": 2
+    },
+    {
+      "failure_mode": "replicate_unit_of_analysis",
+      "tasks": 1,
+      "answers_recovered": 2,
+      "passed": 1
+    }
+  ],
+  "grader_kinds_checked_against_published_verdicts": [
+    "numeric_tolerance"
+  ]
+}

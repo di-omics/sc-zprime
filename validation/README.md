@@ -60,3 +60,28 @@ still worth doing and has not been done.
 adjudicated label, and the adjudicated answer to the second question. It
 contains no benchmark answer. `tests/test_upstream.py` asserts that the
 tracer agrees with it.
+
+## SpatialBench
+
+The method labels for the 3 SpatialBench batch-correction tasks have not
+been through this protocol. They were set by rule, read in part by one AI
+model, and then reviewed by a second AI model that searched every transcript
+of those tasks for a correction method (see `docs/SPATIALBENCH.md`, section
+5). That is a review, not a blind re-rating, and no person has checked the
+labels.
+
+`spatialbench_closing_messages.csv` is not a rating. It is the output of
+`scripts/closing_messages.py`: for each of those 3 tasks, how many runs
+store a last message that names a batch effect, and from which providers. It
+is a keyword match. Some transcripts store no assistant text, and in some
+the last stored text is an opening plan. How many store any differs by
+provider, so the table also gives, for each provider, its runs, its runs
+with any assistant text and the median length of the last stored text.
+
+## Answer recovery
+
+`answer_recovery.csv` is the output of `scripts/answer_recovery_check.py`.
+For the 3 benchmarks that publish each run's answer next to its transcript,
+it counts, by harness, how often `sc_zprime.answers` recovers the answer from
+the transcript alone and how often the recovered answer equals the published
+one. `tests/test_upstream.py` regenerates it.

@@ -27,8 +27,11 @@ def _sha(path: Path) -> str:
 
 def input_fingerprint(root: str | Path) -> dict:
     """SHA-256 over every file the analysis reads, in sorted path order."""
+    from .load import task_dir
+
     root = Path(root)
-    files = sorted((root / "evals").glob("*/*.json"))
+    where = task_dir(root)
+    files = sorted(where.glob("*/*.json")) if where else []
     for name in READ_BY_ANALYSIS:
         files += sorted((root / "trajectories").glob(f"*/*/*/*/*/{name}"))
     board = root / "results" / "model_results.csv"

@@ -1,0 +1,4 @@
+task,runs,runs_with_any_assistant_text,last_text_names_a_batch_effect,of_those_by_provider,runs_by_provider,with_any_assistant_text_by_provider,median_chars_of_last_text_by_provider
+NORM01_batch_correction,48,36,22,anthropic 17; gemini 4; xai 1,anthropic 18; openai 15; xai 9; gemini 6,anthropic 18; gemini 6; openai 6; xai 6,anthropic 898; gemini 378; openai 91; xai 309
+DR01_batch_confounded_clustering,48,36,13,anthropic 13,anthropic 18; openai 15; xai 9; gemini 6,anthropic 18; gemini 6; openai 6; xai 6,anthropic 725; gemini 85; openai 86; xai 422
+curio_ovary_batch_driven_clustering,48,32,3,anthropic 2; gemini 1,anthropic 18; openai 15; xai 9; gemini 6,anthropic 18; openai 7; xai 4; gemini 3,anthropic 365; gemini 309; openai 84; xai 198

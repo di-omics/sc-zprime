@@ -1,0 +1,4 @@
+task,trap_method,runs,configurations,providers,runs_passed,configurations_with_a_pass,lowest_margin,median_margin,highest_margin,distinct_answers,zprime_against_intended,zprime_note
+NORM01_batch_correction,no sample handling,47,16,4,0,0,3.21,3.45,3.6,29,,needs at least 3 runs in each control
+DR01_batch_confounded_clustering,no sample handling,48,16,4,0,0,"above, clear of the edge","above, clear of the edge","above, clear of the edge",9,,withheld: a whole-number field with a tolerance under 10
+curio_ovary_batch_driven_clustering,no sample handling,47,16,4,1,1,0.28,2.54,2.78,40,,needs at least 3 runs in each control

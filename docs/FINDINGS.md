@@ -238,10 +238,9 @@ fails. Three details qualify it.
   reproduces in the task environment.
 - **One named trap was never submitted, and would have passed.** The notes
   list log-normalisation followed by the cell_ranger selection flavour as
-  incorrect and expect it near the other log-normalised answer, at margin
-  -1.42. At least 13 runs from 7 configurations computed it while comparing
-  options, and each printed a value at margin +0.60, inside the window
-  **[read]**. None submitted it. The separation measured here is between the
+  incorrect and expect it near the other log-normalised answer, below the
+  window. At least 13 runs from 7 configurations computed it while comparing
+  options, and each printed a value inside the window **[read]**. None submitted it. The separation measured here is between the
   recipes agents chose to submit, not between every method the notes accept
   and every method they reject.
 
@@ -321,13 +320,15 @@ ended up:
 | Task | Cluster | Margin | Verdict on that field |
 |---|---|---|---|
 | Normalization | 29 runs, 13 configurations | -0.82 | pass |
-| QC | 13 runs, 9 configurations | +1.00 | pass |
+| QC | 13 runs, 9 configurations | inside, near the upper edge | pass |
 | Differential expression | 9 runs, 4 configurations | +1.03 | fail |
 | Differential expression | 6 runs, 4 configurations | -0.93 | pass |
-| QC | 4 runs, 4 configurations | +1.25 | fail |
+| QC | 4 runs, 4 configurations | above, near the edge | fail |
 
-The normalization cluster sits where the notes say it would. The QC cluster
-at +1.00 sits exactly on the upper edge of one field.
+The normalization cluster sits where the notes say it would. The larger QC
+cluster sits just inside the upper edge of one field. That field is a whole
+number with a small tolerance, so its margins are given as zones and not as
+numbers (see [DATA_POLICY.md](DATA_POLICY.md)).
 
 The QC notes belong here too. They accept running no cell filter at all on
 this gene panel, and they document one near-miss the grader cannot see: a

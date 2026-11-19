@@ -49,6 +49,85 @@ def reproduce(bench) -> dict:
     }
 
 
+WIDE = 200
+GRID = 100
+FINE_GRID = 10
+WITHHELD = "withheld"
+
+
+def _on_a_grid(ref, lower, upper, limit: float = GRID) -> bool:
+    """A whole-number field with a small whole-number tolerance.
+
+    Answers to such a field are whole numbers, so their margins fall on a grid
+    whose spacing is 1 divided by the tolerance. Two things follow, and both
+    look at the task file only, never at the runs.
+
+    Under a tolerance of 100 the grid can show at two decimals, and the window
+    percentage would then turn the tolerance into the reference. So the
+    percentage is not written for these fields.
+
+    Under a tolerance of 10 the grid is plain from a handful of margins, and
+    anything else the tables say about the field (a floor at zero, say) would
+    then narrow the reference to a few whole numbers. So for these fields no
+    margin is written at all, only the zone it falls in: see `zone`.
+    """
+    def whole(x) -> bool:
+        return float(x).is_integer()
+
+    return whole(ref) and whole(lower) and whole(upper) and 0 < max(lower, upper) < limit
+
+
+def fine_grid_fields(bench) -> set[tuple[str, str]]:
+    """The (task, field) pairs whose margins are published as zones only."""
+    keys = set()
+    for (task, name), g in bench.fields.groupby(["task", "field"], sort=False):
+        ref, lower, upper = g["reference"].iloc[0], g["band_lower"].iloc[0], g["band_upper"].iloc[0]
+        if any(v is None or pd.isna(v) for v in (ref, lower, upper)):
+            continue
+        if _on_a_grid(ref, lower, upper, FINE_GRID):
+            keys.add((task, name))
+    return keys
+
+
+def zone(margin) -> str | None:
+    """Where a margin falls, to the resolution of `margin_zones.csv` plus its side."""
+    if margin is None or pd.isna(margin):
+        return None
+    a = round(abs(float(margin)), 6)
+    if a <= EDGE_INNER:
+        return "inside"
+    if a <= 1.0:
+        return "inside, near the lower edge" if margin < 0 else "inside, near the upper edge"
+    side = "below" if margin < 0 else "above"
+    return f"{side}, near the edge" if a <= EDGE_OUTER else f"{side}, clear of the edge"
+
+
+def zoned(frame: pd.DataFrame, rows, columns) -> pd.DataFrame:
+    """A copy of `frame` for publication: in the rows flagged by `rows`, each margin column holds a zone."""
+    if not len(frame) or not any(rows):
+        return frame
+    out = frame.copy()
+    mask = pd.Series(list(rows), index=out.index)
+    for column in columns:
+        out[column] = out[column].astype(object)
+        out.loc[mask, column] = [zone(v) for v in frame.loc[mask, column]]
+    return out
+
+
+def _window_pct(arm: float, ref: float):
+    """One arm of a window as a percentage of the reference, to the nearest percent.
+
+    Anything wider than 200%, including a window around a reference of zero,
+    is written as ">200". A blank or an infinite value here would say that the
+    reference is exactly zero, which is a reference value.
+    """
+    if arm == 0:
+        return 0.0
+    if ref == 0 or 100 * arm / abs(ref) > WIDE:
+        return f">{WIDE}"
+    return float(round(100 * arm / abs(ref)))
+
+
 def readouts(bench) -> pd.DataFrame:
     """One row per graded field: how wide the window is and what it decides."""
     fields, runs = bench.fields, bench.runs
@@ -63,12 +142,13 @@ def readouts(bench) -> pd.DataFrame:
         sole = [failed_fields.get(r, []) == [name] for r in failing]
         counts = g["value"].round(6).value_counts(dropna=True)
         has_width = lower is not None and upper is not None and not pd.isna(lower) and not pd.isna(upper)
+        grid = has_width and _on_a_grid(ref, lower, upper)
         rows.append({
             "task": task,
             "field": name,
             "kind": g["kind"].iloc[0],
-            "window_lower_pct_of_reference": round(100 * lower / abs(ref)) if has_width and ref != 0 else None,
-            "window_upper_pct_of_reference": round(100 * upper / abs(ref)) if has_width and ref != 0 else None,
+            "window_lower_pct_of_reference": None if not has_width else WITHHELD if grid else _window_pct(lower, ref),
+            "window_upper_pct_of_reference": None if not has_width else WITHHELD if grid else _window_pct(upper, ref),
             "lower_edge_at_zero": bool(g["lower_pinned_at_zero"].iloc[0]),
             "runs": int(len(g)),
             "pass_rate": round(float(g["passed"].mean()), 3),
@@ -357,10 +437,12 @@ def separation_by_trap(traced: pd.DataFrame) -> pd.DataFrame:
                 "lowest_margin": round(float(m.min()), 2) if len(m) else None,
                 "median_margin": round(float(m.median()), 2) if len(m) else None,
                 "highest_margin": round(float(m.max()), 2) if len(m) else None,
-                "distinct_answers": int(t["value"].round(6).nunique()),
+                "distinct_answers": int((t["answer_key"] if "answer_key" in t else t["value"].round(6)).nunique()),
                 "zprime_against_intended": None if z is None else (z if math.isinf(z) else round(z, 2)),
                 "zprime_note": ("" if z is not None else
-                                f"needs at least {MIN_CONTROL} runs in each control"),
+                                "withheld: a whole-number field with a tolerance under 10"
+                                if len(t) and t["value"].isna().all() and "answer_key" in t and t["answer_key"].notna().any()
+                                else f"needs at least {MIN_CONTROL} runs in each control"),
             })
     return pd.DataFrame(rows)
 

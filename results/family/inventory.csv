@@ -1,0 +1,16 @@
+benchmark,upstream_commit,public_tasks,tasks_with_a_public_grader,tasks_this_tool_can_grade,grader_kinds,tasks_with_design_notes,transcripts,runs_with_an_answer_file,runs_with_a_published_verdict,configurations,max_repeats,summary_table,harnesses,models,eval_tool_versions,result_files_with_a_tool_version,grader_types_declared_in_metadata,tasks_with_a_failure_mode_label,failure_mode_taxonomy,can_reproduce_verdicts,can_grade_from_transcripts,can_measure_repeatability,can_trace_methods
+epibench,46c69cb,7,0,0,not published,0,28,0,0,4,1,False,pi 14; claude-code 7; openai-codex 7,4,,0,,1,v1.1.0,False,False,False,False
+metagenomicsbench,661be73,4,4,4,all_of(numeric_tolerance); numeric_tolerance,0,0,0,0,0,0,False,,0,,0,,1,v1.2.0,False,False,False,False
+neurobench,804b78c,3,0,0,not published,0,0,0,0,0,0,False,,0,,0,numeric_range; numeric_range + predicate; numeric_tolerance + numeric_range,0,,False,False,False,False
+oncologybench,96eb31b,2,2,0,list_of(all_of + rubric),0,0,0,0,0,0,False,,0,,0,,2,v1.2.0,False,False,False,False
+rarediseasebench,f296e7f,2,2,0,list_of(rubric),2,0,0,0,0,0,False,,0,,0,,0,,False,False,False,False
+scbench,106726f,6,6,6,numeric_tolerance,6,273,273,273,16,3,True,mini-swe-agent 237; claude-code 18; openai-codex 18,14,0.3.8; 0.3.9,273,,0,,True,True,True,True
+scbench-long,b3991d8,4,0,0,not published,0,20,0,0,5,1,False,pi 12; claude-code 4; openai-codex 4,5,,0,,0,,False,False,False,False
+spatialbench,baa9841,16,16,16,numeric_tolerance,16,768,768,768,16,3,True,mini-swe-agent 672; claude-code 48; openai-codex 48,14,0.3.7,432,,0,,True,True,True,True
+spatialbench-long,b693be2,4,0,0,not published,0,16,16,16,4,1,False,pi 8; claude-code 4; openai-codex 4,4,0.3.14,16,,0,,False,False,False,False
+tissuemicroscopybench,9ec8ac7,5,0,0,not published,0,0,0,0,0,0,False,,0,,0,"composite (location_radius, numeric_tolerance, numeric_range); composite (numeric_tolerance); polygon_iou_list; spatiotemporal_event_f1",0,,False,False,False,False
+txBench-antibody-development,d9a81be,3,0,0,not published,0,0,0,0,0,0,False,,0,,0,all_of; numeric_range,0,,False,False,False,False
+txbench-antibody-discovery,b4a28e4,6,0,0,not published,0,24,0,0,4,1,False,pi 12; claude-code 6; openai-codex 6,4,,0,all_of; numeric_tolerance,0,,False,False,False,False
+txbench-oligo-discovery,b757f9a,4,0,0,not published,0,16,0,0,4,1,False,pi 8; claude-code 4; openai-codex 4,4,,0,all_of,0,,False,False,False,False
+txbench-pp,920bff7,12,12,12,all_of(label_set_jaccard + marker_gene_precision_recall); all_of(label_set_jaccard + multiple_choice); all_of(label_set_jaccard + numeric_tolerance); all_of(label_set_jaccard); all_of(marker_gene_precision_recall); numeric_tolerance,12,48,0,0,4,1,False,pi 24; claude-code 12; openai-codex 12,4,,0,,12,v1.1.0,False,True,False,True
+variantbench,96a2656,8,8,8,all_of(label_set_jaccard); list_of(label_set_jaccard + numeric_tolerance); list_of(multiple_choice + numeric_tolerance); marker_gene_precision_recall; numeric_tolerance,8,28,0,0,5,1,False,pi 16; mini-swe-agent 6; openai-codex 6,4,,0,,4,v1.1.0,False,True,False,True

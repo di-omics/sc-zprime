@@ -75,7 +75,7 @@ By configuration (one model in one harness; its three repeats are not independen
 
 The pass window as a test of method (whole-run verdicts):
 
-- Sensitivity, intended-method runs that pass: 17 of 17 (100%; all 7 configurations agree, so there is no bootstrap interval. Counted in configurations, the exact one-sided 97.5% bound is at least 59%)
+- Sensitivity, intended-method runs that pass: 17 of 17 (100%; all 7 configurations agree, so there is no bootstrap interval. Counted in configurations, and treating them as independent, the exact one-sided 97.5% bound is at least 59%)
 - Specificity, trap-method runs that fail: 7 of 20 (35%; 95% interval 19% to 53%)
 - Passing runs that used a trap method: 13 of 30; 95% interval 18% to 72%
 

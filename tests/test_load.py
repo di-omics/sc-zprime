@@ -7,10 +7,10 @@ import pytest
 from sc_zprime import load, metrics, report
 
 
-def make(root, tasks, runs):
+def make(root, tasks, runs, task_dir="evals"):
     """tasks: {task: grader}; runs: [(task, config, rep, answer, published_pass)]."""
     for task, grader in tasks.items():
-        path = root / "evals" / "cat" / f"{task}.json"
+        path = root / task_dir / "cat" / f"{task}.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps({"id": task, "grader": grader, "metadata": {"task": "cat", "kit": "kit"}}))
     for task, config, rep, answer, published in runs:
@@ -66,3 +66,13 @@ def test_a_broken_grader_config_fails_closed_and_is_counted(tmp_path):
     bench = load.load_latch_layout(root)
     row = bench.runs[bench.runs["task"] == "c"].iloc[0]
     assert not row["regraded_pass"] and row["config_error"]
+
+
+def test_task_files_under_example_evals_are_read_the_same_way(tmp_path):
+    """SpatialBench keeps its task files in example_evals/ rather than evals/."""
+    runs = [("a", "m1", "r1", {"x": 11}, True), ("a", "m1", "r2", {"x": 30}, False)]
+    one = load.load_latch_layout(make(tmp_path / "one", {"a": NUMERIC}, runs))
+    two = load.load_latch_layout(make(tmp_path / "two", {"a": NUMERIC}, runs, task_dir="example_evals"))
+    assert list(two.runs["regraded_pass"]) == list(one.runs["regraded_pass"]) == [True, False]
+    from sc_zprime import provenance
+    assert provenance.input_fingerprint(tmp_path / "two")["files"] == provenance.input_fingerprint(tmp_path / "one")["files"] == 5

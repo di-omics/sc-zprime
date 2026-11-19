@@ -1,0 +1,6 @@
+task,tier,runs,runs_passed,configurations,configurations_with_a_pass,configurations_passing_every_time,providers
+NORM01_batch_correction,trap,47,0,16,0,0,4
+NORM01_batch_correction,other,1,0,1,0,0,1
+DR01_batch_confounded_clustering,trap,48,0,16,0,0,4
+curio_ovary_batch_driven_clustering,trap,47,1,16,1,0,4
+curio_ovary_batch_driven_clustering,other,1,1,1,1,1,1

@@ -149,3 +149,22 @@ def test_leaderboard_tells_apart_by_a_test_of_the_difference_not_by_overlap():
     assert (summary["pairs"], summary["pairs_overlapping"], summary["pairs_not_told_apart"]) == (3, 3, 2)
     told = dict(zip(rows["config"], rows["told_apart_from_leader"]))
     assert told["a / h"] is None and told["b / h"] is True and told["c / h"] is False
+
+
+def test_a_window_percentage_never_gives_away_a_reference_of_zero():
+    """A blank or infinite width would say the reference is exactly zero. Wide windows all read the same."""
+    from sc_zprime import metrics
+
+    assert metrics._window_pct(5, 0) == ">200" == metrics._window_pct(5, 2)
+    assert metrics._window_pct(5, 10) == 50.0
+    assert metrics._window_pct(0, 0) == 0.0 == metrics._window_pct(0, 7)
+
+
+def test_a_window_percentage_is_withheld_where_margins_fall_on_a_grid():
+    """Whole-number reference and a small whole-number tolerance: the grid gives the tolerance, so the width must not."""
+    from sc_zprime import metrics
+
+    assert metrics._on_a_grid(12, 3, 3) and metrics._on_a_grid(0, 2, 2) and metrics._on_a_grid(40.0, 99, 5)
+    assert not metrics._on_a_grid(12, 100, 100), "at two decimals a tolerance of 100 or more cannot be read off the grid"
+    assert not metrics._on_a_grid(12.5, 3, 3) and not metrics._on_a_grid(12, 2.5, 2.5)
+    assert not metrics._on_a_grid(12, 0, 0), "an exact-match field has no width to withhold"

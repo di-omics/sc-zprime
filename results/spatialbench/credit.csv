@@ -1,0 +1,17 @@
+task,fields,dead_fields,strict_pass_rate,partial_credit,partial_credit_live_fields_only
+DR01_batch_confounded_clustering,2,1,0.0,0.5,0.0
+MOTIF04_neuronal_female_tf_family,1,0,0.0,0.0,0.0
+NORM01_batch_correction,2,1,0.0,0.5,0.0
+SPATIAL07_sex_housekeeping_de,1,0,0.0,0.0,0.0
+SPATIAL10_genome_wide_de_pct,1,0,0.0,0.0,0.0
+curio_ovary_batch_driven_clustering,1,0,0.042,0.042,0.042
+curio_ovary_cumulus_gc_count_immature,2,1,0.062,0.521,0.062
+curio_ovary_follicle_count_immature,1,0,0.25,0.25,0.25
+curio_ovary_oocyte_count_per_timepoint,9,0,0.125,0.588,0.588
+norm_01_opc_olig_maturation_foldchange,1,0,0.021,0.021,0.021
+norm_02_myelin_gene_coexpression_normalization,1,0,0.167,0.167,0.167
+qc_01_endothelial_doublet_assessment,1,0,0.208,0.208,0.208
+visium_bone_celltype_lineage_resolution_limit,4,2,0.438,0.734,0.469
+xenium_kidney_celltype_fib_immune_temporal,4,1,0.354,0.661,0.562
+xenium_kidney_spatial_cn7_composition_day14,4,3,0.917,0.979,0.938
+xenium_kidney_spatial_fibro_inflammatory_niche_emergence_2,4,1,0.0,0.281,0.056

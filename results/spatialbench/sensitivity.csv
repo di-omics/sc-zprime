@@ -1,0 +1,36 @@
+analysis,setting,scope,value,baseline
+edge-decided share of verdicts,tolerance x0.95 or x1.05,ALL,0.013,False
+edge-decided share of verdicts,tolerance x0.9 or x1.1,ALL,0.02,False
+edge-decided share of verdicts,tolerance x0.8 or x1.25,ALL,0.033,True
+edge-decided share of verdicts,tolerance x0.67 or x1.5,ALL,0.074,False
+edge-decided share of verdicts,tolerance x0.5 or x2.0,ALL,0.163,False
+dead readouts (count of fields),passed by at least 90% of runs,ALL,11.0,False
+dead readouts (count of fields),passed by at least 95% of runs,ALL,10.0,True
+dead readouts (count of fields),passed by at least 100% of runs,ALL,6.0,False
+share of numeric answers in a cluster of identical values,cluster of at least 2,ALL,0.514,False
+share of numeric answers in a cluster of identical values,cluster of at least 3,ALL,0.478,True
+share of numeric answers in a cluster of identical values,cluster of at least 5,ALL,0.418,False
+Z-prime,per trap method (the reported form): no sample handling,NORM01_batch_correction,,True
+Z-prime,"all trap methods pooled, mean and SD",NORM01_batch_correction,,False
+Z-prime,"all trap methods pooled, median and MAD",NORM01_batch_correction,,False
+share of trap-method runs that pass,as labelled,NORM01_batch_correction,0.0,True
+share of trap-method runs that pass,without anthropic,NORM01_batch_correction,0.0,False
+share of trap-method runs that pass,without gemini,NORM01_batch_correction,0.0,False
+share of trap-method runs that pass,without openai,NORM01_batch_correction,0.0,False
+share of trap-method runs that pass,without xai,NORM01_batch_correction,0.0,False
+Z-prime,per trap method (the reported form): no sample handling,DR01_batch_confounded_clustering,,True
+Z-prime,"all trap methods pooled, mean and SD",DR01_batch_confounded_clustering,,False
+Z-prime,"all trap methods pooled, median and MAD",DR01_batch_confounded_clustering,,False
+share of trap-method runs that pass,as labelled,DR01_batch_confounded_clustering,0.0,True
+share of trap-method runs that pass,without anthropic,DR01_batch_confounded_clustering,0.0,False
+share of trap-method runs that pass,without gemini,DR01_batch_confounded_clustering,0.0,False
+share of trap-method runs that pass,without openai,DR01_batch_confounded_clustering,0.0,False
+share of trap-method runs that pass,without xai,DR01_batch_confounded_clustering,0.0,False
+Z-prime,per trap method (the reported form): no sample handling,curio_ovary_batch_driven_clustering,,True
+Z-prime,"all trap methods pooled, mean and SD",curio_ovary_batch_driven_clustering,,False
+Z-prime,"all trap methods pooled, median and MAD",curio_ovary_batch_driven_clustering,,False
+share of trap-method runs that pass,as labelled,curio_ovary_batch_driven_clustering,0.021,True
+share of trap-method runs that pass,without anthropic,curio_ovary_batch_driven_clustering,0.0,False
+share of trap-method runs that pass,without gemini,curio_ovary_batch_driven_clustering,0.024,False
+share of trap-method runs that pass,without openai,curio_ovary_batch_driven_clustering,0.031,False
+share of trap-method runs that pass,without xai,curio_ovary_batch_driven_clustering,0.026,False

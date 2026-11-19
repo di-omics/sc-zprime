@@ -24,9 +24,11 @@ Window widths are a percentage of the reference value, to the nearest percent.
 
 | field | kind | window_lower_pct_of_reference | window_upper_pct_of_reference | lower_edge_at_zero | pass_rate | distinct_answers | largest_cluster_share | dead | failures_involving_field | failures_from_field_alone |
 |---|---|---|---|---|---|---|---|---|---|---|
-| median_hvg_prevalence | absolute | 39 | 39 | no | 0.604 | 5 | 0.604 | no | 19 | 19 |
+| median_hvg_prevalence | absolute | withheld | withheld | no | 0.604 | 5 | 0.604 | no | 19 | 19 |
 | median_umis_per_cell | absolute | 18 | 18 | no | 1 | 1 | 1 | yes | 0 | 0 |
-| pct_counts_one | absolute | 7 | 7 | no | 1 | 5 | 0.688 | yes | 0 | 0 |
+| pct_counts_one | absolute | withheld | withheld | no | 1 | 5 | 0.688 | yes | 0 | 0 |
+
+A width is withheld for a whole-number field with a small tolerance, where it would give the reference away (docs/DATA_POLICY.md).
 
 ## Answer clusters
 
@@ -38,8 +40,10 @@ Three or more runs that submitted the identical value for a field with a toleran
 | median_hvg_prevalence | no | 13 | 0.271 | 8 | 4 | -1.42 | no | no |
 | median_hvg_prevalence | no | 3 | 0.062 | 3 | 3 | 18.11 | no | no |
 | median_umis_per_cell | yes | 48 | 1 | 16 | 4 | 0 | yes | no |
-| pct_counts_one | yes | 33 | 0.688 | 12 | 4 | -0.02 | yes | no |
-| pct_counts_one | yes | 11 | 0.229 | 6 | 3 | -0.02 | yes | no |
+| pct_counts_one | yes | 33 | 0.688 | 12 | 4 | inside | yes | no |
+| pct_counts_one | yes | 11 | 0.229 | 6 | 3 | inside | yes | no |
+
+For a whole-number field with a tolerance under 10 the margin is given as a zone, not a number: its margins would fall on a grid that shows the tolerance (docs/DATA_POLICY.md). Near an edge means within 20% inside it or 25% outside it.
 
 ## Edge sensitivity
 
@@ -76,9 +80,9 @@ By configuration (one model in one harness; its three repeats are not independen
 
 The pass window as a test of method (whole-run verdicts):
 
-- Sensitivity, intended-method runs that pass: 29 of 29 (100%; all 13 configurations agree, so there is no bootstrap interval. Counted in configurations, the exact one-sided 97.5% bound is at least 75%)
-- Specificity, trap-method runs that fail: 17 of 17 (100%; all 8 configurations agree, so there is no bootstrap interval. Counted in configurations, the exact one-sided 97.5% bound is at least 63%)
-- Passing runs that used a trap method: 0 of 29; all 13 configurations agree, so there is no bootstrap interval. Counted in configurations, the exact one-sided 97.5% bound is at most 25%
+- Sensitivity, intended-method runs that pass: 29 of 29 (100%; all 13 configurations agree, so there is no bootstrap interval. Counted in configurations, and treating them as independent, the exact one-sided 97.5% bound is at least 75%)
+- Specificity, trap-method runs that fail: 17 of 17 (100%; all 8 configurations agree, so there is no bootstrap interval. Counted in configurations, and treating them as independent, the exact one-sided 97.5% bound is at least 63%)
+- Passing runs that used a trap method: 0 of 29; all 13 configurations agree, so there is no bootstrap interval. Counted in configurations, and treating them as independent, the exact one-sided 97.5% bound is at most 25%
 
 The traced readout on its own:
 

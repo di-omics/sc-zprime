@@ -12,5 +12,6 @@ checkout), `label` (must match a rule label in the task's method spec), and
 Step indices count shell commands from zero, in transcript order, as parsed
 by `sc_zprime.trajectory.load_steps`.
 
-Each of these labels was later confirmed by independent blind raters (AI
-models) who never saw it (see `validation/` at the repository root).
+Each of the scBench labels was later confirmed by independent blind raters (AI
+models) who never saw it (see `validation/` at the repository root). The
+SpatialBench labels have not been through that check yet.

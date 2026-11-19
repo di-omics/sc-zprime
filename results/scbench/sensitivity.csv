@@ -22,8 +22,8 @@ share of trap-method runs that pass,without gemini,DE01_pseudobulk_de,0.588,Fals
 share of trap-method runs that pass,without openai,DE01_pseudobulk_de,0.667,False
 share of trap-method runs that pass,without xai,DE01_pseudobulk_de,0.636,False
 Z-prime,"per trap method (the reported form): log-normalise, then dispersion HVG",NRM01_sparse_normalization,1.0,True
-Z-prime,per trap method (the reported form): dispersion HVG on raw counts,NRM01_sparse_normalization,0.999,True
-Z-prime,"all trap methods pooled, mean and SD",NRM01_sparse_normalization,-5.412,False
+Z-prime,per trap method (the reported form): dispersion HVG on raw counts,NRM01_sparse_normalization,1.0,True
+Z-prime,"all trap methods pooled, mean and SD",NRM01_sparse_normalization,-5.4,False
 Z-prime,"all trap methods pooled, median and MAD",NRM01_sparse_normalization,,False
 share of trap-method runs that pass,as labelled,NRM01_sparse_normalization,0.0,True
 share of trap-method runs that pass,without anthropic,NRM01_sparse_normalization,0.0,False

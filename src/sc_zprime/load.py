@@ -7,6 +7,9 @@ One adapter is implemented: the layout used by benchmarks built on the
     trajectories/<task>/<provider>/<model>/<harness>/r<k>/result.json
     trajectories/<task>/<provider>/<model>/<harness>/r<k>/trajectory.json
 
+SpatialBench uses the same tree with its task files under `example_evals/`
+instead of `evals/`. Either name is accepted.
+
 Nothing here executes code from the checkout. Files are read as JSON only.
 
 Three tables come back:
@@ -52,9 +55,21 @@ def _read_json(path: Path):
         return json.load(handle)
 
 
+TASK_DIRS = ("evals", "example_evals")
+
+
+def task_dir(root: str | Path) -> Path | None:
+    """The directory of task files in a checkout, or None if there is none."""
+    for name in TASK_DIRS:
+        if (Path(root) / name).is_dir():
+            return Path(root) / name
+    return None
+
+
 def load_tasks(root: Path) -> tuple[pd.DataFrame, dict[str, dict]]:
     rows, grader_by_task = [], {}
-    for path in sorted((root / "evals").glob("*/*.json")):
+    where = task_dir(root)
+    for path in sorted(where.glob("*/*.json")) if where else []:
         spec = _read_json(path)
         if not isinstance(spec, dict) or "id" not in spec:
             continue
@@ -78,13 +93,13 @@ def load_latch_layout(root: str | Path, name: str | None = None) -> Benchmark:
     """Load every graded run in a latch-eval-tools style checkout."""
     root = Path(root)
     name = name or root.name
-    if not (root / "evals").is_dir() or not (root / "trajectories").is_dir():
+    if task_dir(root) is None or not (root / "trajectories").is_dir():
         raise NoBenchmarkFound(
-            f"{root} is not a benchmark checkout: expected evals/ and trajectories/ inside it. "
-            "Pass the checkout itself, for example ../upstream/scbench.")
+            f"{root} is not a benchmark checkout: expected evals/ (or example_evals/) and trajectories/ "
+            "inside it. Pass the checkout itself, for example ../upstream/scbench.")
     tasks, grader_by_task = load_tasks(root)
     if tasks.empty:
-        raise NoBenchmarkFound(f"no task files found under {root / 'evals'}")
+        raise NoBenchmarkFound(f"no task files found under {task_dir(root)}")
     skipped = []
     for task, grader in list(grader_by_task.items()):
         if not graders.supported(grader):

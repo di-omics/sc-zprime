@@ -13,6 +13,8 @@ from dataclasses import dataclass
 
 from . import CallArgument, Combo, MethodSpec, Rule, _balanced
 
+CHECKED = "All were confirmed by blind AI raters (see validation/)."
+
 _DESEQ = r"(?:DeseqDataSet|DESeqDataSetFromMatrix)"
 _DESIGN = r"design(?:_factors)?"
 _LINEAR = r"glmQLFit|glmFit|exactTest|voom\s*\(|lmFit"
@@ -36,6 +38,7 @@ DE_PSEUDOBULK = MethodSpec(
         "other": "donor-aware pseudobulk with a hand-written test instead of a count model (not mentioned in the notes)",
     },
     basis="task notes, sections 1 to 4, for the intended and trap tiers; the partial and other tiers are this analysis' labels for methods the notes do not mention",
+    checked=CHECKED,
 )
 
 
@@ -95,6 +98,7 @@ HVG_NORMALIZATION = MethodSpec(
         "other": "a variant the notes do not list by name, such as seurat_v3 applied to already normalised data (their last item rejects any pipeline built on normalize_total, which plausibly covers it; kept apart here as the cautious choice)",
     },
     basis="task notes, sections 4 to 6, for the intended and trap tiers; the notes also accept scran and SCTransform, for which there is no rule here because no run used them",
+    checked=CHECKED,
 )
 
 _REGRESS = r"regress_out\s*\("
@@ -115,6 +119,7 @@ PCA_PREPROCESSING = MethodSpec(
         "trap": "skips depth regression, gene scaling, or both (the notes' three named traps; skipping regression is their primary one)",
     },
     basis="task notes, sections 2 to 4. The notes also accept SCTransform and scVI with a depth covariate as depth handling; the rules here recognise only an explicit regress_out call, which is all that the public runs used",
+    checked=CHECKED,
 )
 
 SPECS = [DE_PSEUDOBULK, HVG_NORMALIZATION, PCA_PREPROCESSING]

@@ -1,0 +1,13 @@
+task,category,platform,horizon,grader,gradable,graded_fields,has_design_notes,failure_modes,runs,answers_recovered,passed
+CTRL01_no_cc1_gate_for_crizotinib_hits,target_engagement,nanobret,small,numeric_tolerance,True,2,True,qc_control_artifact; metric_statistic_mismatch; marker_reference_label_scope,4,4,1
+DMA_02_mechanism_sign,mechanism_of_action,crispr,small,all_of(marker_gene_precision_recall),True,2,True,biological_interpretation,4,4,2
+H2_toxfree_advance_image,program_decision,immunofluorescence,small,numeric_tolerance,True,2,True,subset_scope_compartment,4,4,2
+HAI2027_MECH01_supported_mechanism_chain,mechanism_of_action,xenograft,long,all_of(marker_gene_precision_recall),True,7,True,causal_epistemic_overreach; biological_interpretation,4,3,0
+PRISM_S4_10_mechanism_family_mining,biomarker_discovery,prism,long,all_of(label_set_jaccard + numeric_tolerance),True,5,True,subset_scope_compartment; metric_statistic_mismatch; causal_epistemic_overreach,4,4,2
+PRISM_V10_C_primary_hit_triage,hit_prioritization,prism,small,all_of(label_set_jaccard + numeric_tolerance),True,2,True,metric_statistic_mismatch,4,3,0
+de_10_cross_modality_herg_convergence,safety_assessment,target_activity_panel,small,all_of(label_set_jaccard + marker_gene_precision_recall),True,2,True,marker_reference_label_scope; causal_epistemic_overreach,4,4,3
+lee2024_RNA1_raw_scrna_target_specificity,target_assessment,chromium,small,all_of(label_set_jaccard + multiple_choice),True,2,True,metric_statistic_mismatch; subset_scope_compartment,4,4,1
+lee2024_SRC2_calcium_response_mode,phenotype_classification,calcium_imaging,small,all_of(label_set_jaccard),True,2,True,metric_statistic_mismatch,4,4,3
+sp_01_plate_well_position_confounder,qc,cell_painting,long,numeric_tolerance,True,1,True,qc_control_artifact; replicate_unit_of_analysis,4,2,1
+txbx_org_organoid_doseresponse_resistant_fraction,image_analysis,brightfield_microscopy,small,numeric_tolerance,True,2,True,marker_reference_label_scope; biological_interpretation,4,4,2
+txbx_org_program_ti_exposure_gonogo,program_decision,drug_combination_screen,small,numeric_tolerance,True,2,True,biological_interpretation,4,4,2

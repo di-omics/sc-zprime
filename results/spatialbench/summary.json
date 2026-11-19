@@ -1,0 +1,194 @@
+{
+  "tool_version": "0.2.0",
+  "benchmark": "spatialbench",
+  "upstream_commit": "baa9841efc99fa03b2f9ec25684c8ec52a2245df",
+  "inputs": {
+    "files": 2321,
+    "sha256": "623aa66efbb60b3a72c877f20a9c7e4375cc05a16f4375293391227cf19fb5a0"
+  },
+  "environment": {
+    "python": "3.12.13",
+    "pandas": "3.1.1",
+    "numpy": "2.5.5",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "uncertainty": {
+    "method": "cluster bootstrap over configurations, 95% percentile interval",
+    "resamples": 10000,
+    "seed": 20261117,
+    "caveat": "approximate and probably too narrow with this few configurations; no interval when every configuration agrees or fewer than 3 stand behind a number"
+  },
+  "reproduce": {
+    "runs": 768,
+    "runs_agree": 768,
+    "fields": 1871,
+    "fields_agree": 1871,
+    "tasks": 16,
+    "configurations": 16,
+    "grader_versions": [
+      "0.3.7"
+    ]
+  },
+  "skipped": [],
+  "runs_with_a_configuration_error": 0,
+  "pass_rate": 0.161,
+  "readouts": {
+    "fields": 39,
+    "numeric_fields": 32,
+    "dead_fields": 10,
+    "tasks_with_a_dead_field": 7
+  },
+  "edge": {
+    "edge_decided_runs": 25,
+    "runs": 768,
+    "share": 0.033
+  },
+  "clusters": {
+    "numeric_answers": 1535,
+    "answers_in_clusters_of_3_or_more": 733,
+    "share": 0.478,
+    "live_field_answers": 1247,
+    "live_field_answers_in_clusters": 450,
+    "live_field_share": 0.361,
+    "clusters_near_an_edge": 3,
+    "runs_in_clusters_near_an_edge": 12
+  },
+  "repeatability": {
+    "cells": 256,
+    "split": 46,
+    "split_share": 0.18,
+    "identical_answer_share": 0.23
+  },
+  "method_tracing": {
+    "tasks_traced": 3,
+    "runs_traced": 144,
+    "labels_set_by_reading": 2,
+    "unresolved": 0,
+    "passes": 2,
+    "passes_from_trap_methods": 1,
+    "ran_intended_but_submitted_other": 2,
+    "traced_from_printed_value": 72,
+    "traced_by_fallback": 70,
+    "by_task": [
+      {
+        "task": "NORM01_batch_correction",
+        "runs": 48,
+        "intended_runs": 0,
+        "intended_pass": 0,
+        "partial_runs": 0,
+        "partial_pass": 0,
+        "trap_runs": 47,
+        "trap_pass": 0,
+        "other_runs": 1,
+        "passes": 0,
+        "passes_from_trap_methods": 0,
+        "window_sensitivity": null,
+        "window_specificity": 1.0,
+        "intended_span_in_tolerance_widths": null,
+        "trap_runs_inside_intended_span": null,
+        "nearest_trap_gap_in_tolerance_widths": null
+      },
+      {
+        "task": "DR01_batch_confounded_clustering",
+        "runs": 48,
+        "intended_runs": 0,
+        "intended_pass": 0,
+        "partial_runs": 0,
+        "partial_pass": 0,
+        "trap_runs": 48,
+        "trap_pass": 0,
+        "other_runs": 0,
+        "passes": 0,
+        "passes_from_trap_methods": 0,
+        "window_sensitivity": null,
+        "window_specificity": 1.0,
+        "intended_span_in_tolerance_widths": null,
+        "trap_runs_inside_intended_span": null,
+        "nearest_trap_gap_in_tolerance_widths": null
+      },
+      {
+        "task": "curio_ovary_batch_driven_clustering",
+        "runs": 48,
+        "intended_runs": 0,
+        "intended_pass": 0,
+        "partial_runs": 0,
+        "partial_pass": 0,
+        "trap_runs": 47,
+        "trap_pass": 1,
+        "other_runs": 1,
+        "passes": 2,
+        "passes_from_trap_methods": 1,
+        "window_sensitivity": null,
+        "window_specificity": 0.979,
+        "intended_span_in_tolerance_widths": null,
+        "trap_runs_inside_intended_span": null,
+        "nearest_trap_gap_in_tolerance_widths": null
+      }
+    ],
+    "by_trap_method": [
+      {
+        "task": "NORM01_batch_correction",
+        "trap_method": "no sample handling",
+        "runs": 47,
+        "configurations": 16,
+        "providers": 4,
+        "runs_passed": 0,
+        "configurations_with_a_pass": 0,
+        "lowest_margin": 3.21,
+        "median_margin": 3.45,
+        "highest_margin": 3.6,
+        "distinct_answers": 29,
+        "zprime_against_intended": null,
+        "zprime_note": "needs at least 3 runs in each control"
+      },
+      {
+        "task": "DR01_batch_confounded_clustering",
+        "trap_method": "no sample handling",
+        "runs": 48,
+        "configurations": 16,
+        "providers": 4,
+        "runs_passed": 0,
+        "configurations_with_a_pass": 0,
+        "lowest_margin": "above, clear of the edge",
+        "median_margin": "above, clear of the edge",
+        "highest_margin": "above, clear of the edge",
+        "distinct_answers": 9,
+        "zprime_against_intended": null,
+        "zprime_note": "withheld: a whole-number field with a tolerance under 10"
+      },
+      {
+        "task": "curio_ovary_batch_driven_clustering",
+        "trap_method": "no sample handling",
+        "runs": 47,
+        "configurations": 16,
+        "providers": 4,
+        "runs_passed": 1,
+        "configurations_with_a_pass": 1,
+        "lowest_margin": 0.28,
+        "median_margin": 2.54,
+        "highest_margin": 2.78,
+        "distinct_answers": 40,
+        "zprime_against_intended": null,
+        "zprime_note": "needs at least 3 runs in each control"
+      }
+    ]
+  },
+  "leaderboard": {
+    "configurations": 20,
+    "with_interval": 20,
+    "tasks": 159,
+    "median_half_width_points": 6.91,
+    "comparison": "unpaired test of each difference at the 5% level, no adjustment for the number of pairs",
+    "others": 19,
+    "others_not_told_apart_from_the_leader": 11,
+    "others_overlapping_the_leader": 13,
+    "pairs": 190,
+    "pairs_not_told_apart": 108,
+    "pairs_overlapping": 138,
+    "implied_split_share_median": 0.245,
+    "implied_split_share_min": 0.177,
+    "implied_split_share_max": 0.402,
+    "implied_single_rerun_disagreement_median": 0.164
+  }
+}

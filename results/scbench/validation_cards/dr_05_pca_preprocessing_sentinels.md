@@ -23,7 +23,7 @@ Window widths are a percentage of the reference value, to the nearest percent.
 | max_top5_depth_corr | absolute | 100 | 74 | yes | 0.104 | 18 | 0.312 | no | 43 | 36 |
 | pc1_top_abs_load | absolute | 54 | 46 | no | 0.854 | 17 | 0.312 | no | 7 | 0 |
 
-A window whose lower edge is zero is a ceiling check: only the upper edge can be missed. That edge is not moved in the edge-sensitivity test below.
+A window whose lower edge is at or below zero is a ceiling check: only the upper edge can be missed. The edge-sensitivity test below moves the upper edge and leaves the lower one where it is.
 
 ## Answer clusters
 
@@ -72,9 +72,9 @@ By configuration (one model in one harness; its three repeats are not independen
 
 The pass window as a test of method (whole-run verdicts):
 
-- Sensitivity, intended-method runs that pass: 5 of 5 (100%; all 2 configurations agree, so there is no bootstrap interval. Counted in configurations, the exact one-sided 97.5% bound is at least 16%)
-- Specificity, trap-method runs that fail: 43 of 43 (100%; all 15 configurations agree, so there is no bootstrap interval. Counted in configurations, the exact one-sided 97.5% bound is at least 78%)
-- Passing runs that used a trap method: 0 of 5; all 2 configurations agree, so there is no bootstrap interval. Counted in configurations, the exact one-sided 97.5% bound is at most 84%
+- Sensitivity, intended-method runs that pass: 5 of 5 (100%; all 2 configurations agree, so there is no bootstrap interval. Counted in configurations, and treating them as independent, the exact one-sided 97.5% bound is at least 16%)
+- Specificity, trap-method runs that fail: 43 of 43 (100%; all 15 configurations agree, so there is no bootstrap interval. Counted in configurations, and treating them as independent, the exact one-sided 97.5% bound is at least 78%)
+- Passing runs that used a trap method: 0 of 5; all 2 configurations agree, so there is no bootstrap interval. Counted in configurations, and treating them as independent, the exact one-sided 97.5% bound is at most 84%
 
 The traced readout on its own:
 

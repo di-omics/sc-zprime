@@ -34,7 +34,7 @@ jobs:
         run: |
           python -m pip install -r requirements.lock
           python -m pip install -e . --no-deps
-      - name: Fetch the upstream benchmark at the pinned commit
+      - name: Fetch the upstream benchmarks at the pinned commits
         run: scripts/fetch_upstream.sh "$RUNNER_TEMP/upstream"
       - name: Full test suite against the benchmark data
         env:
@@ -44,3 +44,11 @@ jobs:
         run: |
           sc-zprime run --upstream "$RUNNER_TEMP/upstream/scbench" --out "$RUNNER_TEMP/out" --name scbench
           python scripts/compare_results.py results/scbench "$RUNNER_TEMP/out" --tolerance 0.005
+          sc-zprime run --upstream "$RUNNER_TEMP/upstream/spatialbench" --out "$RUNNER_TEMP/out-spatial" --name spatialbench
+          python scripts/compare_results.py results/spatialbench "$RUNNER_TEMP/out-spatial" --tolerance 0.005
+          for name in variantbench txbench-pp; do
+            sc-zprime regrade --upstream "$RUNNER_TEMP/upstream/$name" --out "$RUNNER_TEMP/out-$name" --name "$name"
+            python scripts/compare_results.py "results/$name" "$RUNNER_TEMP/out-$name"
+          done
+          sc-zprime inventory --upstream "$RUNNER_TEMP/upstream" --out "$RUNNER_TEMP/out-family" --skip biosecbench- --skip eval-graders --skip latch-eval-tools
+          python scripts/compare_results.py results/family "$RUNNER_TEMP/out-family"

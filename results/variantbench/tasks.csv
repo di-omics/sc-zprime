@@ -1,0 +1,9 @@
+task,category,platform,horizon,grader,gradable,graded_fields,has_design_notes,failure_modes,runs,answers_recovered,passed
+chry_father_son_concordance_11,specialized_germline_analyses,illumina_exome,small,numeric_tolerance,True,1,True,,4,3,0
+cis_mr_bcaa,mendelian_randomization,none,small,list_of(label_set_jaccard + numeric_tolerance),True,4,True,subset_scope_compartment,4,4,1
+eval_stage4_annotated_vcf,variant_analysis,illumina_exome,small,marker_gene_precision_recall,True,1,True,threshold_resolution_instability; subset_scope_compartment,2,2,0
+fine_mapping_effector_gene_prioritization,fine_mapping,illumina_wgs,small,list_of(multiple_choice + numeric_tolerance),True,2,True,,4,4,3
+ont_rfc1_repeat_expansion_pathogenicity,repeat_expansions,ont,small,numeric_tolerance,True,2,True,,4,4,1
+osteosarcoma_wes_stage3_called_vcf_neoantigen_gene_recall,variant_analysis,illumina_exome,small,marker_gene_precision_recall,True,1,True,qc_control_artifact,2,2,0
+small_variant_calling_mnv_codon_consequence,small_variant_calling,illumina_exome,small,numeric_tolerance,True,1,True,normalization_representation,4,4,1
+sv_chromosome_end_signal,variant_filtering_and_benchmarking,"['pacbio', 'ont']",small,all_of(label_set_jaccard),True,2,True,,4,4,0

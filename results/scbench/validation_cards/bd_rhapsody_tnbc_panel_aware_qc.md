@@ -21,9 +21,11 @@ Window widths are a percentage of the reference value, to the nearest percent.
 
 | field | kind | window_lower_pct_of_reference | window_upper_pct_of_reference | lower_edge_at_zero | pass_rate | distinct_answers | largest_cluster_share | dead | failures_involving_field | failures_from_field_alone |
 |---|---|---|---|---|---|---|---|---|---|---|
-| median_genes_per_pbmc | absolute | 12 | 12 | no | 0.792 | 9 | 0.333 | no | 10 | 3 |
+| median_genes_per_pbmc | absolute | withheld | withheld | no | 0.792 | 9 | 0.333 | no | 10 | 3 |
 | n_monocytes_pbmc | absolute | 39 | 39 | no | 0.938 | 41 | 0.062 | no | 3 | 0 |
 | n_pbmcs_retained | absolute | 6 | 6 | no | 0.833 | 29 | 0.146 | no | 8 | 2 |
+
+A width is withheld for a whole-number field with a small tolerance, where it would give the reference away (docs/DATA_POLICY.md).
 
 ## Answer clusters
 
@@ -31,15 +33,17 @@ Three or more runs that submitted the identical value for a field with a toleran
 
 | field | field_is_dead | runs | share_of_runs | configurations | providers | margin | field_passed | near_edge |
 |---|---|---|---|---|---|---|---|---|
-| median_genes_per_pbmc | no | 16 | 0.333 | 10 | 4 | 0 | yes | no |
-| median_genes_per_pbmc | no | 13 | 0.271 | 9 | 4 | 1 | yes | yes |
-| median_genes_per_pbmc | no | 7 | 0.146 | 5 | 3 | 0.12 | yes | no |
-| median_genes_per_pbmc | no | 4 | 0.083 | 4 | 3 | 1.25 | no | yes |
+| median_genes_per_pbmc | no | 16 | 0.333 | 10 | 4 | inside | yes | no |
+| median_genes_per_pbmc | no | 13 | 0.271 | 9 | 4 | inside, near the upper edge | yes | yes |
+| median_genes_per_pbmc | no | 7 | 0.146 | 5 | 3 | inside | yes | no |
+| median_genes_per_pbmc | no | 4 | 0.083 | 4 | 3 | above, near the edge | no | yes |
 | n_monocytes_pbmc | no | 3 | 0.062 | 2 | 2 | -0.33 | yes | no |
 | n_pbmcs_retained | no | 7 | 0.146 | 6 | 3 | 0.06 | yes | no |
 | n_pbmcs_retained | no | 6 | 0.125 | 3 | 3 | 0.25 | yes | no |
 | n_pbmcs_retained | no | 3 | 0.062 | 2 | 2 | 0.01 | yes | no |
 | n_pbmcs_retained | no | 3 | 0.062 | 3 | 3 | 0.09 | yes | no |
+
+For a whole-number field with a tolerance under 10 the margin is given as a zone, not a number: its margins would fall on a grid that shows the tolerance (docs/DATA_POLICY.md). Near an edge means within 20% inside it or 25% outside it.
 
 ## Edge sensitivity
 

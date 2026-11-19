@@ -7,13 +7,13 @@ NRM01_sparse_normalization,median_hvg_prevalence,False,29,0.604,13,4,-0.82,True,
 NRM01_sparse_normalization,median_hvg_prevalence,False,13,0.271,8,4,-1.42,False,False
 NRM01_sparse_normalization,median_hvg_prevalence,False,3,0.062,3,3,18.11,False,False
 NRM01_sparse_normalization,median_umis_per_cell,True,48,1.0,16,4,0.0,True,False
-NRM01_sparse_normalization,pct_counts_one,True,33,0.688,12,4,-0.02,True,False
-NRM01_sparse_normalization,pct_counts_one,True,11,0.229,6,3,-0.02,True,False
-T04a_endothelin_niche_sources,mural_nuclei,True,32,0.97,11,3,0.0,True,False
-bd_rhapsody_tnbc_panel_aware_qc,median_genes_per_pbmc,False,16,0.333,10,4,0.0,True,False
-bd_rhapsody_tnbc_panel_aware_qc,median_genes_per_pbmc,False,13,0.271,9,4,1.0,True,True
-bd_rhapsody_tnbc_panel_aware_qc,median_genes_per_pbmc,False,7,0.146,5,3,0.12,True,False
-bd_rhapsody_tnbc_panel_aware_qc,median_genes_per_pbmc,False,4,0.083,4,3,1.25,False,True
+NRM01_sparse_normalization,pct_counts_one,True,33,0.688,12,4,inside,True,False
+NRM01_sparse_normalization,pct_counts_one,True,11,0.229,6,3,inside,True,False
+T04a_endothelin_niche_sources,mural_nuclei,True,32,0.97,11,3,inside,True,False
+bd_rhapsody_tnbc_panel_aware_qc,median_genes_per_pbmc,False,16,0.333,10,4,inside,True,False
+bd_rhapsody_tnbc_panel_aware_qc,median_genes_per_pbmc,False,13,0.271,9,4,"inside, near the upper edge",True,True
+bd_rhapsody_tnbc_panel_aware_qc,median_genes_per_pbmc,False,7,0.146,5,3,inside,True,False
+bd_rhapsody_tnbc_panel_aware_qc,median_genes_per_pbmc,False,4,0.083,4,3,"above, near the edge",False,True
 bd_rhapsody_tnbc_panel_aware_qc,n_monocytes_pbmc,False,3,0.062,2,2,-0.33,True,False
 bd_rhapsody_tnbc_panel_aware_qc,n_pbmcs_retained,False,7,0.146,6,3,0.06,True,False
 bd_rhapsody_tnbc_panel_aware_qc,n_pbmcs_retained,False,6,0.125,3,3,0.25,True,False

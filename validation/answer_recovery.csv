@@ -1,0 +1,10 @@
+benchmark,harness,runs,answers_recovered,printed,written,tagged,equal_to_the_published_answer,equal_among_printed,equal_among_written,same_verdict_as_published,flagged_written_again_unseen,equal_among_flagged
+scbench,claude-code,18,18,18,0,0,18,18,0,18,0,0
+scbench,mini-swe-agent,237,229,204,25,0,229,204,25,229,0,0
+scbench,openai-codex,18,18,18,0,0,18,18,0,18,0,0
+spatialbench,claude-code,48,48,48,0,0,48,48,0,48,0,0
+spatialbench,mini-swe-agent,672,629,581,47,1,619,573,45,627,11,4
+spatialbench,openai-codex,48,48,48,0,0,48,48,0,48,0,0
+spatialbench-long,claude-code,4,4,4,0,0,4,4,0,,0,0
+spatialbench-long,openai-codex,4,2,2,0,0,2,2,0,,0,0
+spatialbench-long,pi,8,8,3,5,0,8,3,5,,0,0

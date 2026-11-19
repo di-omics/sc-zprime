@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from . import methods, trajectory
+from . import methods, metrics, trajectory
 
 
 PACKAGED_ANNOTATIONS = Path(__file__).resolve().parent / "annotations"
@@ -39,12 +39,24 @@ def trace(bench, annotations_dir: str | Path | None = None) -> pd.DataFrame:
                     if any(h.tier == "intended" for h in methods.classify_any(step.command, spec)):
                         ran_intended = True
                         break
+            margin = None if f.margin is None or pd.isna(f.margin) else round(float(f.margin), 2)
+            # What the statistics downstream (Z-prime, spans, gaps) may be computed from. For a field whose
+            # reference and tolerance are whole numbers, a statistic of the raw answers is a function of a few whole
+            # offsets and would narrow the tolerance. So: under a tolerance of 100 the statistics see the published
+            # 2-decimal margin and nothing finer, and under 10, where no margin is published, they see nothing.
+            value, lower, upper = f.value, f.band_lower, f.band_upper
+            known = not any(v is None or pd.isna(v) for v in (f.reference, lower, upper))
+            if known and metrics._on_a_grid(f.reference, lower, upper, metrics.FINE_GRID):
+                value = lower = upper = None
+            elif known and metrics._on_a_grid(f.reference, lower, upper):
+                value, lower, upper = margin, 1.0, 1.0
             rows.append({
                 "task": task, "run_id": f.run_id, "provider": f.provider, "model": f.model,
                 "harness": f.harness, "config": f.config, "rep": f.rep, "field": spec.field,
                 "method": a.label, "tier": a.tier, "source": a.source, "evidence": a.evidence,
-                "value": f.value, "band_lower": f.band_lower, "band_upper": f.band_upper,
-                "margin": None if f.margin is None or pd.isna(f.margin) else round(float(f.margin), 2),
+                "value": value, "band_lower": lower, "band_upper": upper,
+                "answer_key": None if f.value is None or pd.isna(f.value) else round(float(f.value), 6),
+                "margin": margin,
                 "field_passed": bool(f.passed), "run_passed": bool(run["regraded_pass"]),
                 "ran_intended_method_elsewhere": ran_intended,
             })

@@ -205,8 +205,23 @@ def claims(data):
                   f"{pct(board['implied_split_share_min'])} to {pct(board['implied_split_share_max'])}")
     say(FINDINGS, f"about {pct(board['implied_single_rerun_disagreement_median'])}, or one task in seven")
 
+    # Clusters of identical answers near a window edge (FINDINGS section 3). A whole-number field with a small
+    # tolerance shows a zone where the others show a margin.
+    label = {"NRM01_sparse_normalization": "Normalization", "bd_rhapsody_tnbc_panel_aware_qc": "QC",
+             "DE01_pseudobulk_de": "Differential expression"}
+    clusters = pd.read_csv(RES / "answer_clusters.csv")
+    near = clusters[clusters["near_edge"].astype(str) == "True"]
+    assert set(near["task"]) == set(label) and len(near) == 5
+    for row in near.itertuples():
+        try:
+            margin = f"{float(row.margin):+.2f}"
+        except ValueError:
+            margin = row.margin
+        say(FINDINGS, f"| {label[row.task]} | {row.runs} runs, {row.configurations} configurations | {margin} | "
+                      f"{'pass' if str(row.field_passed) == 'True' else 'fail'} |")
+
     # Tracing and its validation.
-    say(README, f"Of {tracing['runs_traced']} traced runs, {tracing['traced_from_printed_value']} are labelled from "
+    say(README, f"Of the {tracing['runs_traced']} traced scBench runs, {tracing['traced_from_printed_value']} are labelled from "
                 f"the printed value, {tracing['traced_by_fallback']} from the last classifiable step and "
                 f"{tracing['labels_set_by_reading']} by reading.")
     ratings = data["ratings"]

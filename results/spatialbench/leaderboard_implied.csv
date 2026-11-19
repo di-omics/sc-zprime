@@ -1,0 +1,21 @@
+config,accuracy,ci_lower,ci_upper,implied_split_share,told_apart_from_leader
+gpt-5.5 / mini-swe-agent,57.65,50.71,64.59,0.221,
+gpt-5.4 / mini-swe-agent,57.44,50.72,64.16,0.277,False
+gemini-3.5-flash / pi,55.56,48.43,62.68,0.186,False
+claude-opus-4-8 / claude-code,55.35,48.22,62.47,0.187,False
+gpt-5.5 / openai-codex,53.67,46.62,60.72,0.213,False
+claude-opus-4-6 / mini-swe-agent,52.83,45.72,59.94,0.2,False
+claude-opus-4-8 / mini-swe-agent,52.62,45.49,59.75,0.195,False
+claude-opus-4-7 / mini-swe-agent,52.41,45.28,59.54,0.196,False
+gemini-3.1-pro-preview / mini-swe-agent,51.57,44.63,58.52,0.245,False
+claude-opus-4-7 / claude-code,51.36,44.15,58.57,0.177,False
+gpt-5.2 / mini-swe-agent,50.1,42.96,57.25,0.195,False
+gemini-3.5-flash / mini-swe-agent,48.85,42.14,55.56,0.304,False
+grok-4.20-beta-0309-reasoning / mini-swe-agent,45.91,39.33,52.5,0.327,True
+claude-sonnet-4-6 / mini-swe-agent,44.23,37.35,51.12,0.246,True
+claude-opus-4-5 / mini-swe-agent,42.77,36.12,49.42,0.295,True
+claude-sonnet-4-5 / mini-swe-agent,41.51,34.92,48.1,0.301,True
+gpt-5.1 / mini-swe-agent,39.83,33.36,46.31,0.314,True
+grok-4-1-fast-reasoning / mini-swe-agent,33.96,27.7,40.22,0.295,True
+grok-4 / mini-swe-agent,31.87,26.25,37.48,0.402,True
+gemini-2.5-pro / mini-swe-agent,28.93,22.97,34.9,0.277,True

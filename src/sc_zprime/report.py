@@ -47,7 +47,8 @@ def _unc(unc: pd.DataFrame, scope: str, statistic: str):
 
 
 def task_flags(task: str, ro: pd.DataFrame, cl: pd.DataFrame, rep: pd.DataFrame, sep: pd.DataFrame,
-               by_config: pd.DataFrame | None = None, by_trap: pd.DataFrame | None = None) -> list[str]:
+               by_config: pd.DataFrame | None = None, by_trap: pd.DataFrame | None = None,
+               traced: pd.DataFrame | None = None) -> list[str]:
     """Plain-language flags. Each prompts a look; none is a verdict on the task."""
     flags = []
     r = ro[ro["task"] == task]
@@ -64,6 +65,14 @@ def task_flags(task: str, ro: pd.DataFrame, cl: pd.DataFrame, rep: pd.DataFrame,
     if len(s) and s["cells"].iloc[0] and int(s["split"].iloc[0]) / int(s["cells"].iloc[0]) >= 0.2:
         flags.append(f"UNSTABLE_REPEATS: {int(s['split'].iloc[0])} of {int(s['cells'].iloc[0])} configurations gave different verdicts across repeats")
     m = sep[sep["task"] == task] if len(sep) else sep
+    if len(m) and int(m.iloc[0]["intended_runs"]) == 0:
+        elsewhere = 0
+        if traced is not None and len(traced) and "ran_intended_method_elsewhere" in traced:
+            elsewhere = int(traced[(traced["task"] == task) & traced["ran_intended_method_elsewhere"]].shape[0])
+        flags.append(f"NO_POSITIVE_CONTROL_IN_RUNS: no run of the {int(m.iloc[0]['runs'])} traced is labelled as submitting an "
+                     "answer from an intended method, so these runs cannot show whether the intended method passes "
+                     "(sensitivity is not measured)"
+                     + (f"; {elsewhere} run(s) ran an intended method at some step and submitted another number" if elsewhere else ""))
     if len(m) and int(m.iloc[0]["trap_pass"]) > 0:
         row = m.iloc[0]
         flags.append(f"TRAP_PASSES: {int(row['trap_pass'])} of {int(row['trap_runs'])} runs that used a method the task notes name as incorrect passed")
@@ -92,7 +101,7 @@ def validation_card(task: str, bench, ro, cl, cells, rep, edge, sep, bym, traced
               f"- Evidence: {len(runs)} graded runs from {runs['config'].nunique()} configurations, {runs['rep'].nunique()} repeats each",
               f"- Pass rate: {runs['regraded_pass'].mean():.1%}",
               f"- Verdicts reproduced by the independent grader: {int((runs['published_pass'] == runs['regraded_pass']).sum())} of {len(runs)}", ""]
-    flags = task_flags(task, ro, cl, rep, sep, by_config, by_trap)
+    flags = task_flags(task, ro, cl, rep, sep, by_config, by_trap, traced)
     context = methods.notes_context(task)
     lines += ["## Flags", "", "A flag prompts a look. It is not a verdict on the task, and the task's own notes may "
               "already explain it. Where they do, that is said under the flag.", ""]
@@ -106,15 +115,22 @@ def validation_card(task: str, bench, ro, cl, cells, rep, edge, sep, bym, traced
     cols = ["field", "kind", "window_lower_pct_of_reference", "window_upper_pct_of_reference", "lower_edge_at_zero", "pass_rate",
             "distinct_answers", "largest_cluster_share", "dead", "failures_involving_field", "failures_from_field_alone"]
     lines += [_md_table(ro[ro["task"] == task][cols])]
+    if (ro[ro["task"] == task]["window_upper_pct_of_reference"] == metrics.WITHHELD).any():
+        lines += ["A width is withheld for a whole-number field with a small tolerance, where it would give the "
+                  "reference away (docs/DATA_POLICY.md).", ""]
     if ro[ro["task"] == task]["lower_edge_at_zero"].any():
-        lines += ["A window whose lower edge is zero is a ceiling check: only the upper edge can be missed. "
-                  "That edge is not moved in the edge-sensitivity test below.", ""]
+        lines += ["A window whose lower edge is at or below zero is a ceiling check: only the upper edge can be missed. "
+                  "The edge-sensitivity test below moves the upper edge and leaves the lower one where it is.", ""]
     lines += ["## Answer clusters", "",
               "Three or more runs that submitted the identical value for a field with a tolerance window (answers are compared "
               "after rounding to six decimals; exact-match fields are not listed). Margin is in tolerance widths: 0 is the "
               "reference, 1 is the window edge.", ""]
     c = cl[cl["task"] == task].drop(columns=["task"]) if len(cl) else cl
     lines += [_md_table(c)]
+    if len(c) and any(isinstance(v, str) for v in c["margin"]):
+        lines += ["For a whole-number field with a tolerance under 10 the margin is given as a zone, not a number: its "
+                  "margins would fall on a grid that shows the tolerance (docs/DATA_POLICY.md). Near an edge means within 20% "
+                  "inside it or 25% outside it.", ""]
     lines += ["## Edge sensitivity", ""]
     e = edge[edge["task"] == task]
     if len(e):
@@ -150,7 +166,7 @@ def validation_card(task: str, bench, ro, cl, cells, rep, edge, sep, bym, traced
                 bound = 1 - u["one_sided_bound"] if flip else u["one_sided_bound"]
                 at_least = (float(u["estimate"]) == 1.0) != flip
                 who = f"all {units} configurations agree" if units > 1 else "the one configuration with data agrees"
-                return (f"; {who}, so there is no bootstrap interval. Counted in configurations, the exact one-sided "
+                return (f"; {who}, so there is no bootstrap interval. Counted in configurations, and treating them as independent, the exact one-sided "
                         f"97.5% bound is {'at least' if at_least else 'at most'} {_pct(bound)}")
             return f"; no interval, because fewer than {uncertainty.MIN_UNITS} configurations stand behind it"
 
@@ -164,7 +180,10 @@ def validation_card(task: str, bench, ro, cl, cells, rep, edge, sep, bym, traced
                          f"({_pct(m['window_specificity'])}{interval('trap-method runs that pass', flip=True)})")
         lines.append(f"- Passing runs that used a trap method: {int(m['passes_from_trap_methods'])} of {int(m['passes'])}"
                      f"{interval('share of passes that come from trap methods')}")
-        if n_int and n_trap and m["intended_span_in_tolerance_widths"] is not None:
+        if n_int and n_trap and m["intended_span_in_tolerance_widths"] == metrics.WITHHELD:
+            lines += ["", "The traced readout on its own: the span of the intended answers and the distance to the nearest "
+                      "trap answer are withheld for a whole-number field with a tolerance under 10."]
+        elif n_int and n_trap and m["intended_span_in_tolerance_widths"] is not None:
             lines += ["", "The traced readout on its own:", "",
                       f"- Intended-method answers span {m['intended_span_in_tolerance_widths']} tolerance widths. "
                       f"Trap-method answers inside that span: {int(m['trap_runs_inside_intended_span'])} of {n_trap}. "
@@ -199,7 +218,7 @@ def validation_card(task: str, bench, ro, cl, cells, rep, edge, sep, bym, traced
         lines += [f"- Runs that ran an intended method at some step but submitted a different method's number: {len(missed)}",
                   f"- Labels: {int((tr['source'].isin(['printed', 'printed_by_script'])).sum())} traced from the printed value, "
                   f"{int((tr['source'] == 'fallback').sum())} from the last classifiable step, {int((tr['source'] == 'reviewed').sum())} set by reading the transcript in full. "
-                  "All were confirmed by blind AI raters (see validation/).",
+                  f"{spec.checked}".rstrip(),
                   "- Intervals are 95% cluster-bootstrap percentile intervals that resample whole configurations. "
                   "With this few configurations they are approximate and probably too narrow.", ""]
     return "\n".join(lines) + "\n"
@@ -230,10 +249,40 @@ def run(upstream: str | Path, out: str | Path, annotations: str | Path | None = 
     unc = uncertainty.uncertainty(bench, sweep, cells, traced)
     by_config = uncertainty.configuration_level(traced)
     sens = uncertainty.sensitivity(bench, traced)
-    unc.to_csv(out / "uncertainty.csv", index=False)
-    sens.to_csv(out / "sensitivity.csv", index=False)
-    if len(by_config):
-        by_config.to_csv(out / "method_by_configuration.csv", index=False)
+
+    # From here on the frames are what gets published (docs/DATA_POLICY.md).
+    #
+    # A traced field whose reference and tolerance are whole numbers, with a tolerance under 100: its Z-prime is
+    # already computed from the published 2-decimal margins (tracing.trace). It is also written to 1 decimal only.
+    # At 2 or 3 decimals, Z-prime together with the margins and the cluster sizes left 3 to 5 whole tolerances
+    # that could have produced it. At 1 decimal it leaves as many as the margins alone do.
+    coarse = {(t, f) for (t, f), g in bench.fields.groupby(["task", "field"], sort=False)
+              if not any(pd.isna(g[c].iloc[0]) for c in ("reference", "band_lower", "band_upper"))
+              and metrics._on_a_grid(g["reference"].iloc[0], g["band_lower"].iloc[0], g["band_upper"].iloc[0])}
+    coarse_tasks = {t for t, f in zip(traced["task"], traced["field"]) if (t, f) in coarse} if "field" in traced else set()
+    if coarse_tasks:
+        rows = unc["scope"].isin(coarse_tasks) & unc["statistic"].astype(str).str.startswith("Z-prime")
+        for column in ("estimate", "ci_low", "ci_high", "lopo_min", "lopo_max"):
+            unc.loc[rows, column] = pd.to_numeric(unc.loc[rows, column], errors="coerce").round(1)
+        rows = sens["scope"].isin(coarse_tasks) & (sens["analysis"] == "Z-prime")
+        sens.loc[rows, "value"] = pd.to_numeric(sens.loc[rows, "value"], errors="coerce").round(1)
+        if len(by_trap):
+            rows = by_trap["task"].isin(coarse_tasks)
+            by_trap.loc[rows, "zprime_against_intended"] = pd.to_numeric(by_trap.loc[rows, "zprime_against_intended"],
+                                                                        errors="coerce").round(1)
+
+    # For a whole-number field with a tolerance under 10, every margin is replaced by the zone it falls in.
+    fine = metrics.fine_grid_fields(bench)
+    fine_tasks = {t for t, f in zip(traced["task"], traced["field"]) if (t, f) in fine} if "field" in traced else set()
+    cl = metrics.zoned(cl, [(t, f) in fine for t, f in zip(cl["task"], cl["field"])] if len(cl) else [], ["margin"])
+    if len(traced):
+        traced = metrics.zoned(traced, [t in fine_tasks for t in traced["task"]], ["margin"])
+        bym = metrics.zoned(bym, [t in fine_tasks for t in bym["task"]], ["median_margin"])
+        by_trap = metrics.zoned(by_trap, [t in fine_tasks for t in by_trap["task"]],
+                                ["lowest_margin", "median_margin", "highest_margin"])
+        for column in ("intended_span_in_tolerance_widths", "nearest_trap_gap_in_tolerance_widths"):
+            sep[column] = sep[column].astype(object)
+            sep.loc[sep["task"].isin(fine_tasks) & sep[column].notna(), column] = metrics.WITHHELD
 
     board_summary = None
     board_path = upstream / "results" / "model_results.csv"
@@ -241,6 +290,10 @@ def run(upstream: str | Path, out: str | Path, annotations: str | Path | None = 
         board, board_summary = metrics.leaderboard(pd.read_csv(board_path))
         board.to_csv(out / "leaderboard_implied.csv", index=False)
 
+    unc.to_csv(out / "uncertainty.csv", index=False)
+    sens.to_csv(out / "sensitivity.csv", index=False)
+    if len(by_config):
+        by_config.to_csv(out / "method_by_configuration.csv", index=False)
     bench.tasks.to_csv(out / "tasks.csv", index=False)
     ro.to_csv(out / "readouts.csv", index=False)
     bins.to_csv(out / "margin_zones.csv", index=False)
@@ -251,7 +304,7 @@ def run(upstream: str | Path, out: str | Path, annotations: str | Path | None = 
     rep.to_csv(out / "repeatability.csv", index=False)
     credit.to_csv(out / "credit.csv", index=False)
     if len(traced):
-        traced.drop(columns=["provider", "value", "band_lower", "band_upper"]).to_csv(out / "method_trace.csv", index=False)
+        traced.drop(columns=["provider", "value", "band_lower", "band_upper", "answer_key"]).to_csv(out / "method_trace.csv", index=False)
         by_trap.to_csv(out / "method_by_trap.csv", index=False)
         bym.to_csv(out / "method_by_tier.csv", index=False)
         sep.to_csv(out / "method_separation.csv", index=False)

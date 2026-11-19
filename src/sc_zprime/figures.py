@@ -40,6 +40,13 @@ TIER_STYLE = {
 PLATFORM = {
     "bd_rhapsody": "BD Rhapsody", "chromium": "10x Chromium", "csgenetics": "CS Genetics",
     "illumina-snrna": "Illumina snRNA", "missionbio-tapestri": "Mission Bio Tapestri", "parsebio": "Parse",
+    "atlasxomics": "AtlasXomics", "curio": "Curio Seeker", "xenium": "Xenium", "visium": "Visium", "merfish": "MERFISH",
+}
+# A task whose category does not say what the traced readout is.
+TASK_TITLE = {
+    "NORM01_batch_correction": "Batch correction: mean share of the top donor per cluster (AtlasXomics)",
+    "DR01_batch_confounded_clustering": "Batch correction: clusters dominated by one donor (AtlasXomics)",
+    "curio_ovary_batch_driven_clustering": "Batch correction: largest share of one timepoint in a cluster (Curio Seeker)",
 }
 CATEGORY = {
     "qc": "Quality control", "normalization": "Normalization", "dimensionality_reduction": "PCA preprocessing",
@@ -72,7 +79,8 @@ def task_names(results: Path) -> dict[str, str]:
         return {}
     t = pd.read_csv(path)
     return {
-        r.task: f"{CATEGORY.get(r.category, str(r.category).replace('_', ' ').capitalize())} ({PLATFORM.get(r.platform, r.platform)})"
+        r.task: TASK_TITLE.get(r.task) or
+        f"{CATEGORY.get(r.category, str(r.category).replace('_', ' ').capitalize())} ({PLATFORM.get(r.platform, r.platform)})"
         for r in t.itertuples()
     }
 
@@ -90,6 +98,16 @@ def _save(fig, results: Path, stem: str) -> None:
     plt.close(fig)
 
 
+def _zone_slots(lo: float, hi: float) -> dict[str, tuple[float, float, float]]:
+    """For each zone a margin can be published as: where to draw it, and the stretch of the axis it covers."""
+    reach = {
+        "below, clear of the edge": (lo, -1.25), "below, near the edge": (-1.25, -1.0),
+        "inside, near the lower edge": (-1.0, -0.8), "inside": (-0.8, 0.8), "inside, near the upper edge": (0.8, 1.0),
+        "above, near the edge": (1.0, 1.25), "above, clear of the edge": (1.25, hi),
+    }
+    return {name: ((a + b) / 2, a, b) for name, (a, b) in reach.items()}
+
+
 def fig_method_separation(results: Path) -> None:
     """Answer spectrum per traced task: where each method's answers land."""
     trace = pd.read_csv(results / "method_trace.csv")
@@ -101,6 +119,19 @@ def fig_method_separation(results: Path) -> None:
     axes = [axes] if len(tasks) == 1 else list(axes)
     for ax, task in zip(axes, tasks):
         g = trace[trace["task"] == task].copy()
+        number = pd.to_numeric(g["margin"], errors="coerce")
+        zones = sorted(set(g["margin"][number.isna() & g["margin"].notna()]))
+        if zones:
+            # A whole-number field with a small tolerance: the table gives each answer's zone, not its margin.
+            # Each zone's runs are drawn in the middle of the zone, over a bar that shows how far the zone reaches.
+            slot = _zone_slots(lo - 0.15, hi + 0.15)
+            g["margin"] = g["margin"].map(lambda z: slot[z][0])
+            for z in zones:
+                ax.axvspan(slot[z][1], slot[z][2], ymin=0, ymax=0.035, color=GREY, lw=0, zorder=2)
+            ax.text(0.998, 0.90, "a count with a small tolerance: placed by zone, not by position", transform=ax.transAxes,
+                    ha="right", va="bottom", fontsize=7.5, color=INK_3)
+        else:
+            g["margin"] = number
         g["x"] = g["margin"].clip(lo, hi)
         g["off"] = (g["margin"] < lo) | (g["margin"] > hi)
         g["bin"] = g["x"].round(2)
@@ -126,7 +157,10 @@ def fig_method_separation(results: Path) -> None:
         if n_off:
             n_hi, n_lo = int((g["margin"] > hi).sum()), int((g["margin"] < lo).sum())
             if n_hi:
-                ax.text(0.998, 0.34, f"{n_hi} further right", transform=ax.transAxes, ha="right", va="bottom", fontsize=7.5, color=INK_3)
+                # Sit above a tall spike near the right edge instead of across it.
+                crowded = g[g["x"] > hi - 0.8].groupby("bin").size().max() > 0.25 * max(top * 1.28, 6)
+                ax.text(0.998, 0.90 if crowded else 0.34, f"{n_hi} further right", transform=ax.transAxes, ha="right",
+                        va="bottom", fontsize=7.5, color=INK_3)
             if n_lo:
                 ax.text(0.002, 0.34, f"{n_lo} further left", transform=ax.transAxes, ha="left", va="bottom", fontsize=7.5, color=INK_3)
         m = sep.loc[task]
@@ -265,6 +299,96 @@ def fig_leaderboard(results: Path) -> None:
     _save(fig, results, "fig3_leaderboard_intervals")
 
 
+def fig_family_inventory(results: Path) -> None:
+    """What each benchmark repository publishes, read from inventory.csv.
+
+    One row per repository. A filled mark means the repository publishes that
+    kind of file for its public tasks, a ring means it does not, and the
+    number beside a mark is the count.
+    """
+    inv = pd.read_csv(results / "inventory.csv")
+    for col in ("can_reproduce_verdicts", "can_grade_from_transcripts"):
+        inv[col] = inv[col].map(_truthy)
+    num = ["public_tasks", "tasks_with_a_public_grader", "transcripts", "runs_with_an_answer_file",
+           "runs_with_a_published_verdict", "max_repeats"]
+    inv[num] = inv[num].fillna(0).astype(int)
+    inv["group"] = 3
+    inv.loc[inv["transcripts"] > 0, "group"] = 2
+    inv.loc[inv["can_grade_from_transcripts"], "group"] = 1
+    inv.loc[inv["can_reproduce_verdicts"], "group"] = 0
+    inv["key"] = inv["benchmark"].str.lower()
+    inv = inv.sort_values(["group", "transcripts", "key"], ascending=[True, False, True]).reset_index(drop=True)
+    group_names = ["verdicts can be reproduced", "runs can be graded once", "runs published, no public grader",
+                   "no runs published"]
+    headers = ["public grader", "transcripts", "answer files", "verdicts", "repeats"]
+
+    # Laid out in inches, y growing downward: one row per repository, extra room above each group.
+    row_h, gap, head, foot = 0.25, 0.34, 0.42, 0.36
+    ys, y = [], head
+    for i, g in enumerate(inv["group"]):
+        if i == 0 or g != inv["group"][i - 1]:
+            y += gap
+        ys.append(y)
+        y += row_h
+    height = y + foot
+    width = 9.0
+    name_x, tasks_x = 0.12, 2.80
+    col_x = [3.62 + 1.12 * k for k in range(len(headers))]
+
+    fig = plt.figure(figsize=(width, height))
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, width)
+    ax.set_ylim(height, 0)
+    ax.axis("off")
+
+    def mark(x, yy, on, fill):
+        if on:
+            ax.plot([x], [yy], marker="o", ms=6.4, color=fill, mec=fill, mew=0.0, zorder=3)
+        else:
+            ax.plot([x], [yy], marker="o", ms=6.0, mfc=SURFACE, mec=INK_3, mew=0.75, zorder=3)
+
+    for x, h in zip(col_x, headers):
+        ax.text(x, head - 0.06, h, ha="center", va="bottom", fontsize=8.8, color=INK_2)
+    ax.plot([name_x, width - 0.12], [head + 0.02, head + 0.02], color=HAIR, lw=0.6)
+
+    for i, r in inv.iterrows():
+        yy = ys[i]
+        g = int(r["group"])
+        if i == 0 or g != inv["group"][i - 1]:
+            top = yy - gap + 0.04
+            if i:
+                ax.plot([name_x, width - 0.12], [top, top], color=HAIR, lw=0.5)
+            ax.text(name_x, yy - row_h / 2 - 0.035, group_names[g], ha="left", va="bottom", fontsize=7.8, color=INK_3)
+        ax.text(name_x, yy, r["benchmark"], ha="left", va="center", fontsize=9, color=INK)
+        n = int(r["public_tasks"])
+        ax.text(tasks_x, yy, f"{n} task{'s' if n != 1 else ''}", ha="right", va="center", fontsize=8, color=INK_3)
+        graded = int(r["tasks_with_a_public_grader"])
+        cells = [
+            (graded > 0 and graded == n, str(graded) if graded == n else (f"{graded}/{n}" if graded else "")),
+            (r["transcripts"] > 0, str(r["transcripts"]) if r["transcripts"] else ""),
+            (r["runs_with_an_answer_file"] > 0, str(r["runs_with_an_answer_file"]) if r["runs_with_an_answer_file"] else ""),
+            (r["runs_with_a_published_verdict"] > 0,
+             str(r["runs_with_a_published_verdict"]) if r["runs_with_a_published_verdict"] else ""),
+            (r["max_repeats"] >= 2, str(r["max_repeats"]) if r["transcripts"] > 0 and r["max_repeats"] else ""),
+        ]
+        fill = ORANGE if g == 0 else INK
+        for x, (on, label) in zip(col_x, cells):
+            mark(x - 0.13, yy, on, fill)
+            if label:
+                ax.text(x - 0.02, yy, label, ha="left", va="center", fontsize=7.8, color=INK_2 if on else INK_3)
+
+    # Key, under the last row.
+    ky = height - 0.15
+    ax.plot([name_x, width - 0.12], [ky - 0.17, ky - 0.17], color=HAIR, lw=0.5)
+    mark(name_x + 0.06, ky, True, INK)
+    ax.text(name_x + 0.19, ky, "published", ha="left", va="center", fontsize=7.8, color=INK_3)
+    mark(name_x + 1.02, ky, False, INK)
+    ax.text(name_x + 1.15, ky, "not published", ha="left", va="center", fontsize=7.8, color=INK_3)
+    ax.text(name_x + 2.25, ky, "numbers: public tasks with a grader, runs, and repeats per configuration", ha="left",
+            va="center", fontsize=7.8, color=INK_3)
+    _save(fig, results, "fig_family_inventory")
+
+
 def draw_all(results: str | Path) -> None:
     results = Path(results)
     _setup()
@@ -272,3 +396,10 @@ def draw_all(results: str | Path) -> None:
         fig_method_separation(results)
     fig_verdict_stability(results)
     fig_leaderboard(results)
+
+
+def draw_family(results: str | Path) -> None:
+    """The figure for `sc-zprime inventory`."""
+    results = Path(results)
+    _setup()
+    fig_family_inventory(results)

@@ -1,0 +1,69 @@
+task,field,field_is_dead,runs,share_of_runs,configurations,providers,margin,field_passed,near_edge
+DR01_batch_confounded_clustering,n_dominated_clusters,False,21,0.438,12,4,"above, clear of the edge",False,False
+DR01_batch_confounded_clustering,n_dominated_clusters,False,12,0.25,7,3,"above, clear of the edge",False,False
+DR01_batch_confounded_clustering,n_dominated_clusters,False,4,0.083,3,3,"above, clear of the edge",False,False
+DR01_batch_confounded_clustering,n_dominated_clusters,False,3,0.062,3,2,"above, clear of the edge",False,False
+DR01_batch_confounded_clustering,n_dominated_clusters,False,3,0.062,2,1,"above, clear of the edge",False,False
+DR01_batch_confounded_clustering,n_hvgs,True,31,0.646,13,4,0.5,True,False
+DR01_batch_confounded_clustering,n_hvgs,True,17,0.354,8,4,-0.1,True,False
+MOTIF04_neuronal_female_tf_family,n_female_biased_significant,False,15,0.312,9,4,"above, clear of the edge",False,False
+MOTIF04_neuronal_female_tf_family,n_female_biased_significant,False,15,0.312,8,3,"above, clear of the edge",False,False
+MOTIF04_neuronal_female_tf_family,n_female_biased_significant,False,8,0.167,6,3,"above, clear of the edge",False,False
+MOTIF04_neuronal_female_tf_family,n_female_biased_significant,False,3,0.062,2,1,"above, clear of the edge",False,False
+MOTIF04_neuronal_female_tf_family,n_female_biased_significant,False,3,0.062,3,2,"above, clear of the edge",False,False
+NORM01_batch_correction,mean_max_sample_fraction,False,7,0.146,3,1,3.48,False,False
+NORM01_batch_correction,mean_max_sample_fraction,False,5,0.104,2,2,3.4,False,False
+NORM01_batch_correction,mean_max_sample_fraction,False,5,0.104,2,1,3.5,False,False
+NORM01_batch_correction,mean_max_sample_fraction,False,3,0.062,1,1,3.27,False,False
+NORM01_batch_correction,n_hvgs,True,29,0.604,12,4,-0.1,True,False
+NORM01_batch_correction,n_hvgs,True,17,0.354,8,4,0.5,True,False
+SPATIAL07_sex_housekeeping_de,n_significant,False,24,0.5,11,4,"above, clear of the edge",False,False
+SPATIAL07_sex_housekeeping_de,n_significant,False,24,0.5,12,4,"above, clear of the edge",False,False
+SPATIAL10_genome_wide_de_pct,pct_de,False,25,0.521,11,4,11.58,False,False
+SPATIAL10_genome_wide_de_pct,pct_de,False,14,0.292,7,3,11.44,False,False
+SPATIAL10_genome_wide_de_pct,pct_de,False,4,0.083,2,2,11.58,False,False
+SPATIAL10_genome_wide_de_pct,pct_de,False,3,0.062,1,1,11.44,False,False
+curio_ovary_batch_driven_clustering,max_single_timepoint_fraction,False,6,0.125,5,2,2.78,False,False
+curio_ovary_batch_driven_clustering,max_single_timepoint_fraction,False,3,0.062,3,2,1.89,False,False
+curio_ovary_follicle_count_immature,follicle_count,False,4,0.085,3,2,-1.45,False,False
+curio_ovary_oocyte_count_per_timepoint,0hr_oocyte_count,False,4,0.083,3,3,0.95,True,True
+curio_ovary_oocyte_count_per_timepoint,11hr_oocyte_count,False,4,0.083,3,3,0.52,True,False
+curio_ovary_oocyte_count_per_timepoint,12hr_oocyte_count,False,5,0.104,4,3,-1.33,False,False
+curio_ovary_oocyte_count_per_timepoint,12hr_oocyte_count,False,4,0.083,3,3,-1.11,False,True
+curio_ovary_oocyte_count_per_timepoint,1hr_oocyte_count,False,4,0.083,3,3,0.1,True,False
+curio_ovary_oocyte_count_per_timepoint,4hr_oocyte_count,False,5,0.104,4,3,0.34,True,False
+curio_ovary_oocyte_count_per_timepoint,6hr_oocyte_count,False,4,0.083,3,3,1.63,False,False
+curio_ovary_oocyte_count_per_timepoint,8hr_oocyte_count,False,4,0.083,3,3,1.15,False,True
+curio_ovary_oocyte_count_per_timepoint,immature_oocyte_count,False,4,0.083,3,3,3.01,False,False
+norm_01_opc_olig_maturation_foldchange,log2fc_mbp_olig_vs_opc,False,16,0.333,7,3,-1.73,False,False
+norm_01_opc_olig_maturation_foldchange,log2fc_mbp_olig_vs_opc,False,9,0.188,5,4,-1.73,False,False
+norm_01_opc_olig_maturation_foldchange,log2fc_mbp_olig_vs_opc,False,9,0.188,5,3,6.75,False,False
+norm_01_opc_olig_maturation_foldchange,log2fc_mbp_olig_vs_opc,False,5,0.104,3,2,5.67,False,False
+norm_01_opc_olig_maturation_foldchange,log2fc_mbp_olig_vs_opc,False,3,0.062,1,1,-1.74,False,False
+norm_02_myelin_gene_coexpression_normalization,spearman_mbp_plp1,False,31,0.646,14,4,-7.74,False,False
+norm_02_myelin_gene_coexpression_normalization,spearman_mbp_plp1,False,5,0.104,3,2,0.3,True,False
+norm_02_myelin_gene_coexpression_normalization,spearman_mbp_plp1,False,4,0.083,2,1,-7.74,False,False
+norm_02_myelin_gene_coexpression_normalization,spearman_mbp_plp1,False,3,0.062,3,1,-7.74,False,False
+qc_01_endothelial_doublet_assessment,pct_doublets,False,6,0.125,3,2,"above, clear of the edge",False,False
+qc_01_endothelial_doublet_assessment,pct_doublets,False,4,0.083,2,1,"above, clear of the edge",False,False
+qc_01_endothelial_doublet_assessment,pct_doublets,False,3,0.062,1,1,"above, clear of the edge",False,False
+visium_bone_celltype_lineage_resolution_limit,cd3d_detection_pct,True,20,0.417,8,3,-0.14,True,False
+visium_bone_celltype_lineage_resolution_limit,cd3d_detection_pct,True,15,0.312,10,3,-0.14,True,False
+visium_bone_celltype_lineage_resolution_limit,cd3d_detection_pct,True,13,0.271,9,3,-0.14,True,False
+visium_bone_celltype_lineage_resolution_limit,elane_detection_pct,True,20,0.417,10,3,-0.06,True,False
+visium_bone_celltype_lineage_resolution_limit,elane_detection_pct,True,20,0.417,8,3,-0.06,True,False
+visium_bone_celltype_lineage_resolution_limit,elane_detection_pct,True,8,0.167,5,3,-0.06,True,False
+visium_bone_celltype_lineage_resolution_limit,n_resolvable_lineages,False,21,0.438,12,4,inside,True,False
+visium_bone_celltype_lineage_resolution_limit,n_resolvable_lineages,False,19,0.396,13,4,"above, clear of the edge",False,False
+xenium_kidney_celltype_fib_immune_temporal,fib_peak_pct,False,6,0.125,5,2,inside,True,False
+xenium_kidney_celltype_fib_immune_temporal,immune_peak_pct,False,6,0.125,5,2,-0.52,True,False
+xenium_kidney_spatial_cn7_composition_day14,fib_enrichment,True,30,0.625,11,4,0.01,True,False
+xenium_kidney_spatial_cn7_composition_day14,fib_enrichment,True,13,0.271,6,2,0.0,True,False
+xenium_kidney_spatial_cn7_composition_day14,fib_enrichment,True,4,0.083,3,1,0.01,True,False
+xenium_kidney_spatial_cn7_composition_day14,fr_pt_enrichment,True,29,0.604,11,4,0.0,True,False
+xenium_kidney_spatial_cn7_composition_day14,fr_pt_enrichment,True,13,0.271,6,2,0.0,True,False
+xenium_kidney_spatial_cn7_composition_day14,fr_pt_enrichment,True,4,0.083,3,1,0.0,True,False
+xenium_kidney_spatial_cn7_composition_day14,pct_top1_celltype,False,27,0.562,11,4,-0.0,True,False
+xenium_kidney_spatial_cn7_composition_day14,pct_top1_celltype,False,15,0.312,6,2,0.0,True,False
+xenium_kidney_spatial_cn7_composition_day14,pct_top1_celltype,False,3,0.062,2,2,-8.81,False,False
+xenium_kidney_spatial_cn7_composition_day14,pct_top1_celltype,False,3,0.062,2,1,-0.0,True,False

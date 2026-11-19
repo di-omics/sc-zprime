@@ -22,7 +22,11 @@ Window widths are a percentage of the reference value, to the nearest percent.
 | field | kind | window_lower_pct_of_reference | window_upper_pct_of_reference | lower_edge_at_zero | pass_rate | distinct_answers | largest_cluster_share | dead | failures_involving_field | failures_from_field_alone |
 |---|---|---|---|---|---|---|---|---|---|---|
 | interpretation | exact | 0 | 0 | no | 0.576 | 4 | 0.576 | no | 14 | 14 |
-| mural_nuclei | absolute | n/a | n/a | no | 0.97 | 2 | 0.97 | yes | 1 | 1 |
+| mural_nuclei | absolute | withheld | withheld | yes | 0.97 | 2 | 0.97 | yes | 1 | 1 |
+
+A width is withheld for a whole-number field with a small tolerance, where it would give the reference away (docs/DATA_POLICY.md).
+
+A window whose lower edge is at or below zero is a ceiling check: only the upper edge can be missed. The edge-sensitivity test below moves the upper edge and leaves the lower one where it is.
 
 ## Answer clusters
 
@@ -30,7 +34,9 @@ Three or more runs that submitted the identical value for a field with a toleran
 
 | field | field_is_dead | runs | share_of_runs | configurations | providers | margin | field_passed | near_edge |
 |---|---|---|---|---|---|---|---|---|
-| mural_nuclei | yes | 32 | 0.97 | 11 | 3 | 0 | yes | no |
+| mural_nuclei | yes | 32 | 0.97 | 11 | 3 | inside | yes | no |
+
+For a whole-number field with a tolerance under 10 the margin is given as a zone, not a number: its margins would fall on a grid that shows the tolerance (docs/DATA_POLICY.md). Near an edge means within 20% inside it or 25% outside it.
 
 ## Edge sensitivity
 

@@ -1,0 +1,67 @@
+{
+  "benchmarks": 15,
+  "public_tasks": 86,
+  "transcripts": 1221,
+  "publish_a_grader_for_every_public_task": 7,
+  "publish_no_grader": 8,
+  "publish_transcripts": 9,
+  "publish_per_run_verdicts": 3,
+  "publish_repeats": 2,
+  "can_reproduce_verdicts": [
+    "scbench",
+    "spatialbench"
+  ],
+  "can_grade_from_transcripts_only": [
+    "txbench-pp",
+    "variantbench"
+  ],
+  "can_measure_repeatability": [
+    "scbench",
+    "spatialbench"
+  ],
+  "tasks_with_a_failure_mode_label": 20,
+  "benchmarks_with_a_failure_mode_label": 5,
+  "failure_mode_taxonomy_versions": [
+    "v1.1.0",
+    "v1.2.0"
+  ],
+  "failure_mode_categories": 11,
+  "most_common_failure_modes": [
+    {
+      "failure_mode": "metric_statistic_mismatch",
+      "tasks": 7
+    },
+    {
+      "failure_mode": "biological_interpretation",
+      "tasks": 6
+    },
+    {
+      "failure_mode": "subset_scope_compartment",
+      "tasks": 6
+    },
+    {
+      "failure_mode": "marker_reference_label_scope",
+      "tasks": 4
+    },
+    {
+      "failure_mode": "causal_epistemic_overreach",
+      "tasks": 3
+    }
+  ],
+  "benchmarks_that_use_only_the_numeric_grader": [
+    "scbench",
+    "spatialbench"
+  ],
+  "benchmarks_that_withhold_the_grader_and_declare_its_type": [
+    "neurobench",
+    "tissuemicroscopybench",
+    "txBench-antibody-development",
+    "txbench-antibody-discovery",
+    "txbench-oligo-discovery"
+  ],
+  "skipped": [
+    "biosecbench-",
+    "eval-graders",
+    "latch-eval-tools"
+  ]
+}

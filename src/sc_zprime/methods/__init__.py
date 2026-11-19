@@ -173,6 +173,9 @@ class MethodSpec:
     rules: list[Rule]
     describe: dict[str, str] = field(default_factory=dict)
     basis: str = ""
+    # How the labels this spec produces were checked, as one sentence for the
+    # validation card. Say who or what did the checking.
+    checked: str = ""
 
 
 @dataclass
@@ -301,13 +304,13 @@ def attribute(run_id: str, run_dir: str | Path, value, spec: MethodSpec, overrid
 
 
 def registry() -> dict[str, MethodSpec]:
-    from . import scbench
+    from . import scbench, spatialbench
 
-    return {spec.task: spec for spec in scbench.SPECS}
+    return {spec.task: spec for spec in scbench.SPECS + spatialbench.SPECS}
 
 
 def notes_context(task: str) -> dict[str, str]:
     """What the task's own notes say about each flag a card may raise."""
-    from . import scbench
+    from . import scbench, spatialbench
 
-    return scbench.NOTES_CONTEXT.get(task, {})
+    return {**scbench.NOTES_CONTEXT, **spatialbench.NOTES_CONTEXT}.get(task, {})

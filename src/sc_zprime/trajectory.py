@@ -1,7 +1,7 @@
 """Read agent transcripts as an ordered list of (command, output) steps.
 
-Four transcript shapes are handled, covering the harnesses in the public
-single-cell runs:
+Five transcript shapes are handled, covering the harnesses in the public
+runs:
 
 1. mini-swe-agent, chat-completions style: assistant messages carry
    `tool_calls`, and `tool` messages carry the output.
@@ -12,6 +12,11 @@ single-cell runs:
    carry `tool_result` blocks, matched by id.
 4. Codex stream: `item.completed` events of type `command_execution` carry the
    command and its aggregated output together.
+5. Pi stream: `tool_execution_start` events carry the tool arguments and
+   `tool_execution_end` events carry the result, matched by `toolCallId`.
+
+A tool call that is not a shell command (a file write, say) becomes a step
+whose command is the JSON text of its arguments.
 
 Transcripts are parsed as JSON and never executed.
 """
@@ -137,7 +142,63 @@ def steps_from_document(doc: Any) -> list[Step]:
                 item = event.get("item") or {}
                 if item.get("type") == "command_execution":
                     add(unwrap_shell(str(item.get("command", ""))), None, _text(item.get("aggregated_output")))
+            elif kind == "tool_execution_start":
+                add(_command(event.get("args")), event.get("toolCallId"))
+            elif kind == "tool_execution_end":
+                attach(event.get("toolCallId"), event.get("result"))
     return steps
+
+
+def assistant_texts(doc: Any) -> list[str]:
+    """Every piece of prose the agent wrote, in order, for the same five shapes."""
+    texts: list[str] = []
+
+    def blocks(content: Any) -> None:
+        for block in content if isinstance(content, list) else []:
+            if isinstance(block, dict) and block.get("type") == "text" and block.get("text"):
+                texts.append(str(block["text"]))
+
+    if isinstance(doc, dict) and isinstance(doc.get("messages"), list):
+        for message in doc["messages"]:
+            if not isinstance(message, dict):
+                continue
+            if message.get("role") == "assistant":
+                content = message.get("content")
+                if isinstance(content, list):
+                    content = " ".join(str(part.get("text", "")) for part in content if isinstance(part, dict))
+                if content:
+                    texts.append(str(content))
+            for item in message.get("output") if isinstance(message.get("output"), list) else []:
+                if isinstance(item, dict) and item.get("type") == "message":
+                    texts += [str(part["text"]) for part in item.get("content") or []
+                              if isinstance(part, dict) and part.get("text")]
+    elif isinstance(doc, list):
+        for event in doc:
+            if not isinstance(event, dict):
+                continue
+            kind = event.get("type")
+            message = event.get("message") if isinstance(event.get("message"), dict) else {}
+            if kind == "assistant" or (kind == "message_end" and message.get("role") == "assistant"):
+                blocks(message.get("content"))
+            elif kind == "item.completed":
+                item = event.get("item") or {}
+                if item.get("type") == "agent_message" and item.get("text"):
+                    texts.append(str(item["text"]))
+            elif kind == "result" and isinstance(event.get("result"), str) and event["result"].strip():
+                texts.append(event["result"])
+    return texts
+
+
+def load_document(path: str | Path) -> Any:
+    """The parsed transcript, or None if the file is missing or not JSON."""
+    path = Path(path)
+    if not path.exists():
+        return None
+    with open(path, "r", encoding="utf-8") as handle:
+        try:
+            return json.load(handle)
+        except ValueError:
+            return None
 
 
 def load_steps(path: str | Path) -> list[Step]:

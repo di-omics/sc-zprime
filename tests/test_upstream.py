@@ -87,3 +87,114 @@ def test_published_accuracies_are_whole_numbers_of_passes():
     passes = table["Accuracy (%)"] / 100 * table["N"] * 3
     slack = 0.005 / 100 * table["N"] * 3
     assert ((passes - passes.round()).abs() <= slack + 1e-9).all()
+
+
+SPATIALBENCH = ROOT / "spatialbench"
+needs_spatial = pytest.mark.skipif(not (SPATIALBENCH / "trajectories").exists(), reason="no SpatialBench checkout")
+
+
+@pytest.fixture(scope="module")
+def spatial():
+    return load.load_latch_layout(SPATIALBENCH, "spatialbench")
+
+
+@needs_spatial
+def test_every_published_spatialbench_verdict_is_reproduced(spatial):
+    r = metrics.reproduce(spatial)
+    assert r["runs"] > 0 and not spatial.skipped
+    assert r["runs_agree"] == r["runs"]
+    assert r["fields_agree"] == r["fields"]
+
+
+@needs_spatial
+def test_every_batch_task_run_gets_a_method(spatial):
+    traced = tracing.trace(spatial)
+    assert traced["task"].nunique() == 3
+    assert not traced["method"].isin(["unresolved", "ambiguous"]).any()
+
+
+@needs_spatial
+def test_answer_recovery_matches_the_committed_measurement():
+    """Recovery from transcripts, measured on every run whose answer file is published."""
+    import importlib.util
+
+    import pandas as pd
+
+    if not (ROOT / "spatialbench-long" / "trajectories").exists():
+        pytest.skip("no SpatialBench-Long checkout")
+    repo = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("answer_recovery_check", repo / "scripts" / "answer_recovery_check.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    fresh = pd.DataFrame(module.measure(ROOT)).astype(str)
+    committed = pd.read_csv(repo / "validation" / "answer_recovery.csv", keep_default_na=False).astype(str)
+    assert fresh.to_dict("records") == committed.to_dict("records")
+    numbers = pd.read_csv(repo / "validation" / "answer_recovery.csv")
+    total = numbers[["runs", "answers_recovered", "equal_to_the_published_answer"]].sum()
+    assert total["equal_to_the_published_answer"] >= 0.98 * total["answers_recovered"]
+    assert total["answers_recovered"] >= 0.9 * total["runs"]
+    assert int(numbers.loc[numbers["harness"] == "pi", "runs"].sum()) > 0, "the pi harness must be in the test set"
+
+
+needs_family = pytest.mark.skipif(not (ROOT / "variantbench" / "trajectories").exists()
+                                  or not (ROOT / "txbench-pp" / "trajectories").exists(),
+                                  reason="no VariantBench or TxBench-PP checkout")
+
+
+@needs_family
+@pytest.mark.parametrize("name", ["variantbench", "txbench-pp"])
+def test_transcript_only_benchmarks_are_graded_without_a_configuration_error(name):
+    from sc_zprime import regrade
+
+    tasks, runs, fields = regrade.regrade(ROOT / name, name)
+    assert not runs["verdict_published"].any(), "these checkouts publish no verdicts; if that changes, use `run`"
+    assert runs["gradable"].all() and tasks["gradable"].all()
+    graded = runs[runs["graded"]]
+    assert len(graded) >= 0.9 * len(runs)
+    assert set(fields["reason"].fillna("")) <= {"", "missing", "wrong_type", "count", "value"}
+    assert (graded["n_fields"] > 0).all()
+
+
+def test_every_pinned_commit_is_the_one_checked_out_and_dated_as_the_pages_say():
+    """docs/FAMILY.md: 15 benchmark repositories read at pinned commits dated November 2026.
+    docs/SPATIALBENCH.md: the evaluation tool at commit 0d79831, dated 30 September 2026."""
+    import re
+    import subprocess
+
+    script = (Path(__file__).resolve().parents[1] / "scripts" / "fetch_upstream.sh").read_text()
+    pins = dict(re.findall(r"^fetch (\S+) ([0-9a-f]{40})$", script, re.M))
+    tool = pins.pop("latch-eval-tools")
+    assert len(pins) == 15 and tool.startswith("0d79831")
+    if not all((ROOT / name / ".git").exists() for name in list(pins) + ["latch-eval-tools"]):
+        pytest.skip("not every pinned checkout is a git clone")
+
+    def head(name):
+        return subprocess.run(["git", "-C", str(ROOT / name), "-c", "core.hooksPath=/dev/null", "log", "-1", "--format=%H %cs"],
+                              capture_output=True, text=True, check=True).stdout.split()
+
+    for name, commit in pins.items():
+        shown = head(name)
+        assert shown[0] == commit and shown[1].startswith("2026-11"), (name, shown)
+    assert head("latch-eval-tools") == [tool, "2026-09-30"]
+
+
+def test_what_the_family_page_says_the_repositories_say_about_themselves():
+    """2 READMEs say their public tasks are kept out of the benchmark, and the task files of 2 repositories say
+    the full evaluation set is available to qualified partners (docs/FAMILY.md, section 1)."""
+    import json
+    import re
+
+    readme = {name: (ROOT / name / "README.md") for name in ("oncologybench", "rarediseasebench")}
+    if not all(path.exists() for path in readme.values()):
+        pytest.skip("no checkout of those repositories")
+    assert "not in the benchmark" in readme["oncologybench"].read_text()
+    assert "removed from the benchmark" in readme["rarediseasebench"].read_text()
+    partners = set()
+    for repo in sorted(p for p in ROOT.iterdir() if p.is_dir() and not p.name.startswith("biosecbench-")):
+        for path in repo.rglob("*.json"):
+            if "trajectories" in path.parts or ".git" in path.parts:
+                continue
+            match = re.search(r'"data_availability"\s*:\s*("(?:[^"\\\\]|\\\\.)*"|\{.*?\})', path.read_text(errors="replace"), re.S)
+            if match and re.search(r"qualified partners", match.group(1)):
+                partners.add(repo.name)
+    assert partners == {"txbench-antibody-discovery", "txbench-oligo-discovery"}, partners
