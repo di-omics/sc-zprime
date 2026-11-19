@@ -26,6 +26,19 @@ would ask before believing a result:
 
 New here? Start with the plain-language guide: [docs/EXPLAINER.md](docs/EXPLAINER.md).
 
+Where things are:
+
+| You want to | Look in |
+|---|---|
+| Read the findings | [docs/](docs/README.md) |
+| See one task's report | `results/<benchmark>/validation_cards/` |
+| Know what a result table holds | [results/README.md](results/README.md) |
+| Reproduce a number | `scripts/fetch_upstream.sh`, then `sc-zprime run`, then `scripts/compare_results.py` |
+| Check the method labels | [validation/](validation/README.md) |
+| Read the graders | `src/sc_zprime/graders.py` |
+| Add a method spec for a task | `src/sc_zprime/methods/` and `src/sc_zprime/annotations/` |
+| See what the tests cover | [tests/README.md](tests/README.md) |
+
 The first target is [scBench](https://github.com/latchbio/scbench), LatchBio's
 benchmark for single-cell RNA-seq analysis. Its authors published graded runs,
 full transcripts and their own design notes for a sample of tasks, which is
@@ -280,6 +293,10 @@ Without it they are skipped, and `pytest -rs` lists them.
 | `answers.py` | Recovers the answer a run left behind from its transcript, for benchmarks that publish no answer files. |
 | `regrade.py` | Grades a benchmark that publishes transcripts and grader configs but no verdicts. |
 | `inventory.py` | Counts what each benchmark repository publishes, and so what can be checked from outside. |
+| `tracing.py` | Applies the method specs in `methods/` to every run of a traced task and writes one labelled row per run. |
+| `cli.py` | The `sc-zprime` command and its subcommands: `run`, `regrade` and `inventory`. |
+| `scripts/` | Helpers around the tool: fetch the pinned upstream checkouts, compare regenerated tables with the committed ones, measure answer recovery, count closing messages and simulate interval coverage. |
+| `validation/` | The blind re-rating of the scBench labels, the measured answer recovery and the keyword count on last messages. |
 
 Method tracing is the part that takes domain knowledge. A numeric grader sees
 one number. The tracer finds the step in the transcript that printed that
