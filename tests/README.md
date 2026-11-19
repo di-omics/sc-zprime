@@ -27,6 +27,7 @@ Not every module has a test file of its own:
 
 - `report.py` is exercised through `test_load.py`.
 - `inventory.py` is exercised through `test_regrade.py` and `test_data_policy.py`.
-- `tracing.py` is exercised only by `test_upstream.py`, so only with the benchmark data.
+- `tracing.py` is checked against real runs only by `test_upstream.py`, which needs the benchmark data.
+  `test_load.py` also runs it, through `report.run` on a synthetic checkout, where the trace is empty.
 - `figures.py`: one test draws the inventory figure. No test draws the other figures.
 - `cli.py` has no test. The reproduce job in `.github/workflows/ci.yml` runs its 3 commands and compares their output with the committed tables.
