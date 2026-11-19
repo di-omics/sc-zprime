@@ -7,7 +7,7 @@ Status of each layer, from the outside, as of November 2026.
 | Grading published answers | **done** | Independent grader reproduces 273 of 273 scBench verdicts and 768 of 768 SpatialBench verdicts. Numeric tolerance only. |
 | Statistics on published runs | **done** | Margins, tolerance sweep, clusters, repeatability, credit, with intervals. |
 | Method tracing from transcripts | **done for 3 of 6 scBench and 3 of 16 SpatialBench tasks** | scBench: differential expression, normalization, PCA preprocessing, labels confirmed by blind AI raters. SpatialBench: the 3 batch-correction tasks, labels reviewed by AI models and not blind re-rated. |
-| Leaderboard statistics | **done from the summary table** | Results are published overall, per category and per platform, not per task, so no paired comparison. |
+| Leaderboard statistics | **done from the summary table** | In the repositories, leaderboard results for the full benchmark are published overall, per category and per platform, not per task, so no paired comparison. On benchmarks.bio, the scBench and SpatialBench boards also list example tasks, each with a pass rate. This tool does not read the site. |
 | Other grader types | **re-implemented, not checked** | Label-set Jaccard, marker list precision and recall, multiple choice and all_of are re-implemented and used for a first grading of VariantBench and TxBench-PP. No benchmark that uses them publishes per-run verdicts, so they are pinned by unit tests only. Distribution comparison and rubric: not started. |
 | Re-deriving reference answers | **not attempted** | Needs the task data. See below. |
 | Scripted controls | **done for 1 task, elsewhere** | The reference pipeline and each named shortcut as code, for one scBench task, in [sc-controls](https://github.com/di-omics/sc-controls). It needs the task data and states the task's numbers, so it is kept out of this repository. |
@@ -16,8 +16,10 @@ Status of each layer, from the outside, as of November 2026.
 ## What running the benchmark needs
 
 The upstream harness (`latchbio/latch-eval-tools`) is publicly readable. Its
-licence reserves all rights, so check the terms before using it. From reading
-its code, a run needs three things:
+licence reserves all rights, so check the terms before using it. GitHub
+showed the repository as archived on 19 November 2026. The commit read here
+(`0d79831`, version 0.4.54, 30 September 2026) is the head of its default
+branch. From reading its code, a run needs three things:
 
 1. **The task data.** Each task names its dataset as a `latch://` node. The
    harness fetches it through the Latch SDK, which requires a Latch account

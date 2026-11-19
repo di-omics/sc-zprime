@@ -176,19 +176,41 @@ def test_every_pinned_commit_is_the_one_checked_out_and_dated_as_the_pages_say()
         shown = head(name)
         assert shown[0] == commit and shown[1].startswith("2026-11"), (name, shown)
     assert head("latch-eval-tools") == [tool, "2026-09-30"]
+    # docs/RUNNING_THE_BENCHMARK.md names the version of the tool at that commit.
+    version = re.search(r'^version\s*=\s*"([^"]+)"', (ROOT / "latch-eval-tools" / "pyproject.toml").read_text(), re.M).group(1)
+    running = " ".join((Path(__file__).resolve().parents[1] / "docs" / "RUNNING_THE_BENCHMARK.md").read_text().split())
+    assert f"The commit read here (`{tool[:7]}`, version {version}, 30 September 2026)" in running
 
 
 def test_what_the_family_page_says_the_repositories_say_about_themselves():
-    """2 READMEs say their public tasks are kept out of the benchmark, and the task files of 2 repositories say
+    """4 READMEs say their public tasks are not part of the benchmark, and the task files of 2 repositories say
     the full evaluation set is available to qualified partners (docs/FAMILY.md, section 1)."""
     import json
     import re
 
-    readme = {name: (ROOT / name / "README.md") for name in ("oncologybench", "rarediseasebench")}
+    kept_out = {
+        "oncologybench": "not in the benchmark",
+        "rarediseasebench": "removed from the benchmark",
+        "tissuemicroscopybench": "not selected for the benchmark",
+        "txBench-antibody-development": "DO NOT APPEAR in the benchmark",
+    }
+    readme = {name: (ROOT / name / "README.md") for name in kept_out}
     if not all(path.exists() for path in readme.values()):
         pytest.skip("no checkout of those repositories")
-    assert "not in the benchmark" in readme["oncologybench"].read_text()
-    assert "removed from the benchmark" in readme["rarediseasebench"].read_text()
+    for name, phrase in kept_out.items():
+        assert phrase in readme[name].read_text(), name
+    # No other README uses one of these phrases. VariantBench says something similar, in other words, of 2 of
+    # its 8 (section 3).
+    says_so = re.compile("|".join(re.escape(phrase) for phrase in kept_out.values()), re.I)
+    others = set()
+    for repo in sorted(p for p in ROOT.iterdir() if p.is_dir() and not p.name.startswith("biosecbench-")):
+        text = (repo / "README.md").read_text(errors="replace") if (repo / "README.md").exists() else ""
+        if repo.name not in kept_out and says_so.search(text):
+            others.add(repo.name)
+    assert others == set(), others
+    family = " ".join((Path(__file__).resolve().parents[1] / "docs" / "FAMILY.md").read_text().split())
+    assert (f"and {len(kept_out)} ({', '.join(kept_out)}) say in their READMEs that their public tasks are not part "
+            "of the benchmark but are built like its tasks.") in family
     partners = set()
     for repo in sorted(p for p in ROOT.iterdir() if p.is_dir() and not p.name.startswith("biosecbench-")):
         for path in repo.rglob("*.json"):

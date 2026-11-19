@@ -445,9 +445,9 @@ interval, so it shares the assumptions listed in section 4. It makes no
 adjustment for testing 153 pairs, which errs towards telling configurations
 apart. And it is unpaired: every configuration ran the same tasks, so a
 paired comparison task by task would separate more of them. That needs
-per-task results, which are not published for the full benchmark. As it
-stands the table supports a few groups with unclear order inside each, not a
-strict ranking.
+per-task results for each configuration, which the repository does not
+publish for the full benchmark. As it stands the table supports a few groups
+with unclear order inside each, not a strict ranking.
 
 ## 7. Fifteen runs ran the intended method and submitted another
 

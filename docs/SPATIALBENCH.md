@@ -48,8 +48,8 @@ the edge of the pass window.
 | How well does the published table resolve? | On the 159-task table in the repository, 11 of the 19 other configurations cannot be told apart from the leader by an unpaired test at the 5% level, with no adjustment for 19 comparisons. |
 
 All configurations in that table ran the same tasks, so a paired test would
-probably separate more of them. It needs per-task results, which are not
-published.
+probably separate more of them. It needs per-task results for each
+configuration, which the repository does not publish.
 
 The edge and repeat shares are lower than on the scBench sample, for
 different reasons. The repeat share is lower mostly because 6 of the 16

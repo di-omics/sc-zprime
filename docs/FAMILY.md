@@ -59,10 +59,11 @@ whose verdicts can be reproduced.
   is nothing to regrade.
 
 This is a statement about what is public. Every repository publishes only a
-sample. Some give the size of the full benchmark and others do not, and 2
-(oncologybench, rarediseasebench) say their public tasks are examples kept
-out of the benchmark. What the authors hold back may be everything a
-validation needs. 5 of the 8 that publish no grader say so in a
+sample. Some give the size of the full benchmark and others do not, and 4
+(oncologybench, rarediseasebench, tissuemicroscopybench,
+txBench-antibody-development) say in their READMEs that their public tasks
+are not part of the benchmark but are built like its tasks. What the authors
+hold back may be everything a validation needs. 5 of the 8 that publish no grader say so in a
 `data_availability` field of each task file: the grader, its tolerances and
 the held-out ground truth are withheld, to prevent training contamination
 and to respect the source-data licences. 2 of the 5 add that the full
