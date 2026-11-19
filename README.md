@@ -31,6 +31,7 @@ Where things are:
 | You want to | Look in |
 |---|---|
 | Read the findings | [docs/](docs/README.md) |
+| See how this lines up with benchmarks.bio | [docs/SUITE.md](docs/SUITE.md) |
 | See one task's report | `results/<benchmark>/validation_cards/` |
 | Know what a result table holds | [results/README.md](results/README.md) |
 | Reproduce a number | `scripts/fetch_upstream.sh`, then `sc-zprime run`, then `scripts/compare_results.py` |
@@ -185,6 +186,14 @@ the full set is available to qualified partners. The snapshot cannot say
 which design came first. The less of a task is public, the less of its
 readout anyone outside can check, and that is the case for the validation
 card below. The account is in [docs/FAMILY.md](docs/FAMILY.md).
+
+On LatchBio's leaderboard site, [benchmarks.bio](https://benchmarks.bio),
+these are 15 of the 21 boards: all but the 6 biosecurity boards, which are
+left out on purpose. The 15 boards score 1250 evaluations in their current
+sets. Their repositories publish 86 public tasks on GitHub, as examples that
+are not always drawn from the board's set. [docs/SUITE.md](docs/SUITE.md)
+lines up each board with its repository, the size of its evaluation set and
+what this tool can check for it.
 
 ## How it was checked
 

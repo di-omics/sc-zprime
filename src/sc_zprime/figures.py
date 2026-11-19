@@ -403,3 +403,66 @@ def draw_family(results: str | Path) -> None:
     results = Path(results)
     _setup()
     fig_family_inventory(results)
+
+
+def fig_suite_boards(suite: Path, family: Path) -> None:
+    """Each board on benchmarks.bio outside biosecurity: the size of its evaluation set, and how far its public
+    sample lets this tool go. Read from results/suite/boards.csv and results/family/inventory.csv."""
+    boards = pd.read_csv(suite / "boards.csv")
+    inv = pd.read_csv(family / "inventory.csv").set_index("benchmark")
+    for col in ("can_reproduce_verdicts", "can_grade_from_transcripts"):
+        inv[col] = inv[col].map(_truthy)
+    levels = [("public runs validated", BLUE), ("public runs graded once", AQUA), ("public files counted", GREY)]
+
+    def level(repository):
+        row = inv.loc[repository]
+        return 0 if row["can_reproduce_verdicts"] else 1 if row["can_grade_from_transcripts"] else 2
+
+    areas = list(dict.fromkeys(boards["area"]))
+    boards["order"] = boards["area"].map(areas.index)
+    boards = boards.sort_values(["order"], kind="stable").reset_index(drop=True)
+
+    # Laid out in inches, y growing downward: one row per board, extra room above each area.
+    row_h, gap, head, foot = 0.27, 0.36, 0.30, 0.62
+    ys, y = [], head
+    for i, area in enumerate(boards["area"]):
+        if i == 0 or area != boards["area"][i - 1]:
+            y += gap
+        ys.append(y)
+        y += row_h
+    height, width = y + foot, 9.0
+    name_x, bar_x, bar_w, sample_x = 0.12, 3.05, 3.2, 7.25
+    top = float(boards["evaluations"].max())
+
+    fig = plt.figure(figsize=(width, height))
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, width)
+    ax.set_ylim(height, 0)
+    ax.axis("off")
+    for i, r in boards.iterrows():
+        yy = ys[i]
+        if i == 0 or r["area"] != boards["area"][i - 1]:
+            ax.text(name_x, yy - row_h / 2 - 0.045, r["area"], ha="left", va="bottom", fontsize=7.8, color=INK_3)
+        k = level(r["repository"])
+        length = bar_w * float(r["evaluations"]) / top
+        ax.text(name_x, yy, r["board"], ha="left", va="center", fontsize=9, color=INK)
+        ax.add_patch(plt.Rectangle((bar_x, yy - 0.075), length, 0.15, color=GREY_SOFT, lw=0))
+        ax.text(bar_x + length + 0.07, yy, f"{int(r['evaluations'])}", ha="left", va="center", fontsize=8, color=INK_2)
+        n = int(inv.loc[r["repository"], "public_tasks"])
+        ax.add_patch(plt.Rectangle((sample_x, yy - 0.05), 0.2, 0.1, color=levels[k][1], lw=0))
+        ax.text(sample_x + 0.3, yy, f"{n} public task{'s' if n != 1 else ''}", ha="left", va="center", fontsize=8,
+                color=INK_2 if k < 2 else INK_3)
+    ax.text(bar_x, head - 0.02, "evaluations in the board's current set", ha="left", va="bottom", fontsize=8.8, color=INK_2)
+    ax.text(sample_x, head - 0.02, "public sample on GitHub", ha="left", va="bottom", fontsize=8.8, color=INK_2)
+    ky, kx = height - 0.26, name_x
+    for label, colour in levels:
+        ax.add_patch(plt.Rectangle((kx, ky - 0.05), 0.2, 0.1, color=colour, lw=0))
+        ax.text(kx + 0.27, ky, label, ha="left", va="center", fontsize=7.8, color=INK_3)
+        kx += 0.42 + 0.062 * len(label)
+    _save(fig, suite, "fig_suite_boards")
+
+
+def draw_suite(suite: str | Path, family: str | Path) -> None:
+    """The figure for `scripts/site_boards.py --figure`."""
+    _setup()
+    fig_suite_boards(Path(suite), Path(family))

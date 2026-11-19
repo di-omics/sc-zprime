@@ -20,6 +20,7 @@ points, and skip without it.
 | `test_docs_numbers.py` | the scBench numbers in `README.md` and `docs/FINDINGS.md`, rebuilt from `results/scbench` | no |
 | `test_docs_numbers_spatialbench.py` | the SpatialBench numbers in `README.md` and `docs/SPATIALBENCH.md` | one test does |
 | `test_docs_numbers_family.py` | the numbers in `README.md` and `docs/FAMILY.md` | no |
+| `test_docs_numbers_suite.py` | the numbers in `README.md` and `docs/SUITE.md`, rebuilt from `results/suite` and `results/family`, and the figure of the boards in `figures.py` | no |
 | `test_data_policy.py` | that no benchmark value is in a tracked file, and that the tables do not give a reference away | yes |
 | `test_upstream.py` | the published verdicts reproduced, `tracing.py`, the measured answer recovery, the pinned commits | yes |
 
@@ -29,5 +30,6 @@ Not every module has a test file of its own:
 - `inventory.py` is exercised through `test_regrade.py` and `test_data_policy.py`.
 - `tracing.py` is checked against real runs only by `test_upstream.py`, which needs the benchmark data.
   `test_load.py` also runs it, through `report.run` on a synthetic checkout, where the trace is empty.
-- `figures.py`: one test draws the inventory figure. No test draws the other figures.
+- `figures.py`: one test draws the inventory figure and one the figure of the boards. No test draws the other figures.
+- `scripts/site_boards.py` reads the live site and has no test. Its committed output is what `test_docs_numbers_suite.py` checks `docs/SUITE.md` against.
 - `cli.py` has no test. The reproduce job in `.github/workflows/ci.yml` runs its 3 commands and compares their output with the committed tables.

@@ -1,0 +1,17 @@
+{
+  "source": "https://benchmarks.bio/llms.txt, https://benchmarks.bio/results/v1/index.md and 1 page per board",
+  "data_updated": "2026-11-17",
+  "leaderboards": 21,
+  "capability_benchmarks": 20,
+  "scored_apart_as_safeguards": 1,
+  "contribute_to_the_overall_score": 13,
+  "missing_boards_allowed_in_the_overall_score": 2,
+  "boards_read": 15,
+  "evaluations_on_the_boards_read": 1250,
+  "boards_read_that_count_toward_the_overall_score": 11,
+  "boards_read_that_state_a_refusal_rule": 4,
+  "boards_read_whose_current_set_differs_from_the_original_study": 4,
+  "biosecurity_boards_left_out": 6,
+  "biosecurity_evaluations_left_out": 552,
+  "biosecurity_boards_that_count_toward_the_overall_score": 2
+}

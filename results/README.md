@@ -1,7 +1,8 @@
 # What each result table holds
 
-One folder per benchmark. Every file here is written by the tool and
-regenerates from the pinned upstream checkouts (see the README, "Run it").
+One folder per benchmark, plus `suite/` for the leaderboard site. Every file
+here is written by the tool. All but `suite/` regenerate from the pinned
+upstream checkouts (see the README, "Run it").
 The tables hold normalised quantities only: see
 [docs/DATA_POLICY.md](../docs/DATA_POLICY.md).
 
@@ -56,3 +57,17 @@ Written by `sc-zprime inventory`.
 | `summary.json` | the totals across repositories | `inventory.run` |
 
 `figures/` holds the inventory figure (`figures.py`).
+
+## suite
+
+Written by `scripts/site_boards.py` from the plain-text pages of
+benchmarks.bio. It is a dated snapshot of the site and does not regenerate
+from the pinned checkouts. It holds board-level facts only, and no result of
+any model.
+
+| File | One row is | Written by |
+|---|---|---|
+| `boards.csv` | a board outside biosecurity: area, horizon, size of the current evaluation set, size in the original study if the page gives one, whether it counts toward the overall score and with what weight, the refusal rule if the page states one, the repository | `scripts/site_boards.py` |
+| `site.json` | the counts for the whole site, and its data date | `scripts/site_boards.py` |
+
+`figures/` holds the figure of the boards (`figures.py`).

@@ -1,0 +1,16 @@
+board,area,horizon,evaluations,original_study_evaluations,counts_toward_overall_score,overall_weight,refusal_rule_stated,repository,board_page,data_updated
+SpatialBench,Omics,short,115,146,True,115,,spatialbench,https://benchmarks.bio/spatial,2026-11-17
+SpatialBench-Long,Omics,long,21,24,True,24,,spatialbench-long,https://benchmarks.bio/spatial-long,2026-11-17
+scBench,Omics,short,195,394,True,195,,scbench,https://benchmarks.bio/scbench,2026-11-17
+scBench-Long,Omics,long,22,21,True,21,,scbench-long,https://benchmarks.bio/scbench-long,2026-11-17
+EpiBench,Omics,short,106,,True,106,,epibench,https://benchmarks.bio/epibench,2026-11-17
+VariantBench,Omics,short,118,,True,118,,variantbench,https://benchmarks.bio/variant,2026-11-17
+MetagenomicsBench,Omics,short,100,,True,100,,metagenomicsbench,https://benchmarks.bio/metagenomics,2026-11-17
+TxBench-Antibody-Discovery,Therapeutics,short,100,,True,100,,txbench-antibody-discovery,https://benchmarks.bio/txbench-ab,2026-11-17
+TxBench-Antibody-Development,Therapeutics,short,60,,False,,,txBench-antibody-development,https://benchmarks.bio/txbench-abdev,2026-11-17
+TxBench-Preclinical-Pharmacology,Therapeutics,short,100,,True,100,,txbench-pp,https://benchmarks.bio/txbench,2026-11-17
+TxBench-Oligo-Discovery,Therapeutics,short,113,,True,113,,txbench-oligo-discovery,https://benchmarks.bio/txbench-oligo,2026-11-17
+NeuroscienceBench,Basic Research,short,91,,False,,leaves the denominator,neurobench,https://benchmarks.bio/neuroscience,2026-11-17
+RareDiseaseBench,Applications,long,35,,False,,a failure,rarediseasebench,https://benchmarks.bio/raredisease,2026-11-17
+TissueMicroscopyBench,Basic Research,short,49,,False,,a failure,tissuemicroscopybench,https://benchmarks.bio/tissuemicroscopy,2026-11-17
+OncologyBench,Applications,long,25,,True,25,stays in the denominator,oncologybench,https://benchmarks.bio/oncology,2026-11-17
